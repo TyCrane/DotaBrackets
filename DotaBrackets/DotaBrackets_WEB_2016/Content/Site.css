@@ -1,24 +1,106 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+body {
+	line-height: 1;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*End Reset*/
+
+.body {
+    background-image: url("http://www.hdwallpaper.nu/wp-content/uploads/2015/02/dota_2_wallpaper_31.jpg");
+    max-width: 100%;
+    min-height: 1200px;
+    background-repeat: no-repeat;
+}
+
+/******************************************** Header *********************************************************/
+.headerUL {
+    background-color: black;
+    overflow: hidden;
+}
+
+.headerUL li {
+    float: left;
+    width: 20%;
+    margin-left: 2%;
+    color: white;
+    padding: 2% 0;
+}
+
+/******************************************** Left Column ****************************************************/
+
+.leftCol {
+    float: left;
+    width: 45%;
+    margin-left: 15%; 
+    margin-top: 10%;
+}
+
+.newsItem {
+    background-color: #3259C5;
+    border: 3px ridge #A5BCF2;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10%;
+    padding: 5%;
+}
+
+.rightCol {
+    background-color: #3259C5;
+    border: 3px ridge #A5BCF2;
+    float: left;
+    width: 25%;
+    margin-left: 6%;
+    margin-top: 10%;
+    text-align: center;
+}
+
+
+.leftColUL li {
+   
 }
