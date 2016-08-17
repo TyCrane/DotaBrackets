@@ -1,22 +1,20 @@
-﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
-{
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-    @Html.AntiForgeryToken()
+﻿
+@model DotaBrackets_WEB_2016.Models.ViewModel
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
-    }
-}
-else
+@using (Html.BeginForm("Login", "Account", FormMethod.Post, new { id = "form1" }))
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+    <li class="nav" style="margin-left: 25%;">
+        <label>Username:</label>
+        @Html.TextBox("userName", new { Style = "width: 52%; background-color: #b5f7f3; border: 1px solid teal" })
+    </li>
+    <li class="nav">
+        <label>Password:</label>
+        @Html.TextBox("access", new { Style = "width: 52%; background-color: #b5f7f3; border: 1px solid teal" })
+    </li>
+    <li class="loginButton">
+        <input type="submit" value="Login" />
+    </li>
 }
+<li style="margin-top: 2%; font-size: .8em; display: inline-block">
+    <a href="@Url.Action("Register", "Home")" style="width: 10%; color: cyan">| Register</a>
+</li>

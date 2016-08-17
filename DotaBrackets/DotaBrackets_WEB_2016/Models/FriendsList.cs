@@ -7,8 +7,13 @@ namespace DotaBrackets_WEB_2016.Models
 {
     public class FriendsList
     {
-        public int friendsListID { get; set; }
-        public int gamerID { get; set; }
-        public List<Gamer> friendsList { get; set; }
+        public List<FriendID> friendsList { get; set; }
+    }
+
+    public class FriendID
+    {
+        public int friendID { get; set; }
+        public string userName { get; set; }
+        public long steamID { get; set; }
     }
 }

@@ -52,7 +52,8 @@ table {
 /*End Reset*/
 
 .body {
-    background-image: url("http://www.hdwallpaper.nu/wp-content/uploads/2015/02/dota_2_wallpaper_31.jpg");
+    background-image: url(DotaBracketsIndexBackgroundImage.png);
+    background-color: black;
     max-width: 100%;
     min-height: 1200px;
     background-repeat: no-repeat;
@@ -60,19 +61,56 @@ table {
 
 /******************************************** Header *********************************************************/
 .headerUL {
-    background-color: black;
+    background-color: rgba(55, 94, 148, 1);
     overflow: hidden;
+    border-left: 10px solid cyan;
 }
 
-.headerUL li {
+.logoLi {
     float: left;
     width: 20%;
-    margin-left: 2%;
-    color: white;
-    padding: 2% 0;
+    margin-left: 10%;
 }
 
-/******************************************** Left Column ****************************************************/
+.logoSpan {
+    color: #b5f7f3;
+    font-size: 1.2em;
+}
+
+.logo {
+    float: left;
+    background-color: red;
+    text-align: center;
+    color: white;
+    border: 1.5px solid teal;
+    text-decoration: none;
+    font-size: 1.8em;
+    font-family: Arial;
+    padding: 8% 3%;
+}
+
+.nav {
+    float: left;
+    width: 18%;
+    margin-left: 0%;
+    color: white;
+    padding-top: 2%;
+}
+
+.loginButton {
+    display: inline-block;
+    margin-right: 1%;
+}
+
+.loginButton input{
+    margin-top: 2%;
+    display: inline-block;
+    color: white;
+    border: 1px solid cyan;
+    background-color:rgba(55, 94, 148, 1);
+}
+
+/******************************************** Columns ****************************************************/
 
 .leftCol {
     float: left;
@@ -82,25 +120,76 @@ table {
 }
 
 .newsItem {
-    background-color: #3259C5;
-    border: 3px ridge #A5BCF2;
+    background-color: rgba(55, 94, 148, 1);
+    border-left: 3px ridge red;
     width: 100%;
     text-align: left;
     margin-bottom: 10%;
     padding: 5%;
+    color: white;
+    line-height: 1.5em;
+}
+
+.newsTitle {
+    font-size: 2em;
+    color: #b5f7f3;
+    text-align: center;
+    padding-top: 1%;
+    padding-bottom: 4%;
+    
 }
 
 .rightCol {
-    background-color: #3259C5;
-    border: 3px ridge #A5BCF2;
+    background-color: rgba(55, 94, 148, 1);
+    border-right: 3px ridge red;
     float: left;
-    width: 25%;
+    width: 23%;
     margin-left: 6%;
     margin-top: 10%;
     text-align: center;
+    color: white;
 }
 
 
-.leftColUL li {
-   
+/*********************************************** Registration Page ********************************************/
+.regHead {
+    margin: auto;
+    padding-top: 3%;
+}
+
+.regHead h1 {
+    font-size: 3em;
+    color: #b5f7f3;
+    text-align: center;
+}
+.register {
+
+}
+
+
+
+.register ul {
+    margin-top: 5%;
+    margin-left: 20%;
+    margin-right: 20%;
+    border-right: 1px solid red;
+}
+
+.register li {
+    background-color: rgba(55, 94, 148, 1);
+    color: white;
+    padding: 2%;
+    border-left: 4px solid cyan;
+}
+
+.register label {
+    color: #b5f7f3;
+}
+
+/****************************************** General ******************************************/
+
+a {
+    color: cyan;
+    text-decoration: none;
+    cursor: auto;
 }

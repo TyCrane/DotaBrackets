@@ -9,8 +9,7 @@ namespace DotaBrackets_WEB_2016.Models
     {
         public int preferencesID { get; set; }
         public int mmr { get; set; }
-        public bool hasMic { get; set; }
+        public int hasMic { get; set; }
         public int language { get; set; }
-        public int server { get; set; }
     }
 }

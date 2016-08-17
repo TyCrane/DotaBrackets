@@ -44,6 +44,12 @@ namespace DotaBrackets_WEB_2016.Controllers
                 return View(allArticles);
         }
 
+        public ActionResult Register()
+        {
+
+            return View();
+        }
+
        
     }
 }

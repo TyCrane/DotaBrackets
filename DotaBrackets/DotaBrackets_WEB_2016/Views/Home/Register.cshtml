@@ -1,0 +1,86 @@
+﻿
+@model DotaBrackets_WEB_2016.Models.ViewModel
+
+<div class="body">
+
+    <div class="header">
+        <ul class="headerUL">
+            <li class="logoLi" style="margin-left: 7%">
+                <a href="@Url.Action("Index", "Home")" class="logo">Dota <span class="logoSpan">[</span>Brackets<span class="logoSpan">]</span></a>
+            </li>
+            @Html.Partial("_loginPartial")
+        </ul>
+    </div>
+
+    <div class="regHead">
+        <h1>
+            New? Make an account!
+        </h1>
+    </div>
+
+    <div class="register">
+        <ul>
+            <li style="color:cyan; font-size: 1.4em; text-align: center; border-left: none">
+                Register
+            </li>
+@using (Html.BeginForm("Create", "Account", FormMethod.Post, new { id = "form1" }))
+{
+            <li>
+                <label style="float: left; width: 12%; color: white">Username:</label>
+                @Html.TextBox("userName", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
+            </li>
+            <li>
+                <label style="float: left; width: 12%; color: white">Password:</label>
+                @Html.TextBox("access", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
+            </li>
+            <li>
+                <label style="float: left; width: 12%; color: white">SteamID:</label>
+                @Html.TextBox("steamID", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
+            </li>
+            <li>
+                <label>Which language do you speak?</label>
+                <p>
+                    @Html.DropDownList("tlang")
+                </p>
+            </li>
+            <li>
+                <label>Do you have a mic?:</label>
+                <p>
+                    @Html.DropDownList("thasMic")
+                </p>
+            </li>
+            <li>
+                <label>Which Server do you prefer?:</label>
+                <p>
+                    @Html.DropDownList("tserv")
+                </p>
+            </li>
+            <li style="color:cyan; font-size: 1.4em; text-align: center;">
+                Party Members
+            </li>
+            <li>
+                <label>What skill level should your teammates be?:</label>
+                <p>
+                    @Html.DropDownList("pmmr")
+                </p>
+            </li>
+            <li>
+                <label>Should your teammates have a mic?:</label>
+                <p>
+                    @Html.DropDownList("phasMic")
+                </p>
+            </li>
+            <li>
+                <label>What language do your teammates speak?</label>
+                <p>
+                    @Html.DropDownList("plang")
+                </p>
+            </li>
+            <li style="text-align: center">
+                <button>Submit</button>
+            </li>
+        </ul>
+}
+    </div>
+</div>
+

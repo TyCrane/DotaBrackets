@@ -63,4 +63,12 @@
   <ItemGroup>
     <None Include="Schema\init_Database.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="StoredProcs\get_Login.sql" />
+    <Build Include="StoredProcs\ins_Traits.sql" />
+    <Build Include="StoredProcs\log_ErrorTimeStamp.sql" />
+    <Build Include="StoredProcs\ins_Preferences.sql" />
+    <Build Include="StoredProcs\ins_Gamer.sql" />
+    <Build Include="StoredProcs\ins_FriendsList.sql" />
+  </ItemGroup>
 </Project>

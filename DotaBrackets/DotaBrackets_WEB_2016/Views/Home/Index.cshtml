@@ -4,7 +4,7 @@
 @{
     if (Model == null)
     {
-        DotaBrackets_WEB_2016.Models.RootObject myModel = new DotaBrackets_WEB_2016.Models.RootObject();
+        DotaBrackets_WEB_2016.Models.ViewModel myModel = new DotaBrackets_WEB_2016.Models.ViewModel();
     }
 
 }
@@ -13,23 +13,36 @@
 
     <div class="header">
         <ul class="headerUL">
-            <li style="background-color: red; text-align: center">
-                Logo
+            <li class="logoLi" style="margin-left: 7%">
+                <a href="@Url.Action("Index", "Home")" class="logo">Dota <span class="logoSpan">[</span>Brackets<span class="logoSpan">]</span></a>
             </li>
-            @Html.Partial("_loginPartial");
+            @Html.Partial("_loginPartial")
         </ul>
     </div>
 
     
     <div class="leftCol">
         @{
-            foreach (DotaBrackets_WEB_2016.Models.Newsitem newsItem in Model.rootObject.appnews.newsitems)
+            if (Model != null)
             {
+                foreach (DotaBrackets_WEB_2016.Models.Newsitem newsItem in Model.rootObject.appnews.newsitems)
+                {
                 <div class="newsItem">
-                    @Html.Raw(newsItem.contents)
+                    <ul>
+                        <li style="text-align: right; margin-bottom: 1%; color:  #b5f7f3;">
+                            @Html.Raw(newsItem.feedlabel)
+                        </li>
+                        <li class="newsTitle">
+                            <a href="@Html.Raw(newsItem.url)">@Html.Raw(newsItem.title)</a>
+                        </li>
+                        <li>
+                            @Html.Raw(newsItem.contents)
+                        </li>
+                    </ul>
                 </div>
+                    }
+                }
             }
-        }
     </div>
 
     <div class="rightCol">
