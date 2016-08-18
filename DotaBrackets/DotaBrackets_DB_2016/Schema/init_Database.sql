@@ -8,19 +8,39 @@ Date:
 Change History:
 	
 ************************************************************************************************************/
+CREATE TABLE MmrType (
+	mmrTypeID INT IDENTITY (1,1) PRIMARY KEY,
+	mmrType VARCHAR(25)
+	)
+
+CREATE TABLE HasMicType (
+	hasMicTypeID INT IDENTITY (1,1) PRIMARY KEY,
+	hasMicType VARCHAR(25)
+	)
+
+CREATE TABLE LangType (
+	langTypeID INT IDENTITY (1,1) PRIMARY KEY,
+	langType VARCHAR(25)
+	)
+
+CREATE TABLE ServType (
+	servTypeID INT IDENTITY (1,1) PRIMARY KEY,
+	servType VARCHAR(25)
+	)
+
 CREATE TABLE Traits (
 	traitsID INT IDENTITY (1,1) PRIMARY KEY,
-	mmr INT,
-	hasMic INT,
-	lang INT,
-	serv INT
+	mmr INT FOREIGN KEY REFERENCES MmrType(mmrTypeID),
+	hasMic INT FOREIGN KEY REFERENCES HasMicType(hasMicTypeID),
+	lang INT FOREIGN KEY REFERENCES LangType(langTypeID),
+	serv INT FOREIGN KEY REFERENCES ServType(servTypeID)
 	)
 
 CREATE TABLE Preferences (
 	preferencesID INT IDENTITY (1,1) PRIMARY KEY,
-	mmr INT,
-	hasMic INT,
-	lang INT
+	mmr INT FOREIGN KEY REFERENCES MmrType(mmrTypeID),
+	hasMic INT FOREIGN KEY REFERENCES HasMicType(hasMicTypeID),
+	lang INT FOREIGN KEY REFERENCES LangType(langTypeID)
 	)
 
 CREATE TABLE Gamer (
@@ -49,4 +69,8 @@ CREATE TABLE ErrorLog (
 	errorMessage NVARCHAR(MAX),
 	errorProcedure NVARCHAR(MAX)
 	)
+
+
+
+
 

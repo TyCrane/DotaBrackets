@@ -20,12 +20,20 @@ namespace DotaBrackets_WEB_2016.Models
 
         public class Appnews
         {
+            public Appnews()
+        {
+            this.newsitems = new List<Newsitem>();
+        }
             public int appid { get; set; }
             public List<Newsitem> newsitems { get; set; }
         }
 
         public class RootObject
         {
+            public RootObject()
+        {
+            this.appnews = new Appnews();
+        }
             public Appnews appnews { get; set; }
         }
 }

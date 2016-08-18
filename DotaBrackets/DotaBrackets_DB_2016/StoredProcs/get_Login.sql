@@ -39,13 +39,13 @@ AS
 				LEFT JOIN Preferences pref ON
 					gamer.preferencesID = pref.preferencesID
 				
-			WHERE gamer.userName = @userName And @access = @access
+			WHERE gamer.userName = @userName And gamer.access = @access
 
 
 		SET @thisGamerID = (
 								SELECT gamerID FROM Gamer gamer
 
-								WHERE gamer.userName = @userName And @access = @access
+								WHERE gamer.userName = @userName And gamer.access = @access
 							)
 
 			SELECT	ISNULL(frend.friendsGamerID, 0) AS friendID,

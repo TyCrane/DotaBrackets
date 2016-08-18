@@ -1,20 +1,24 @@
 ﻿
 @model DotaBrackets_WEB_2016.Models.ViewModel
 
-@using (Html.BeginForm("Login", "Account", FormMethod.Post, new { id = "form1" }))
+
+@using (Html.BeginForm("LoginWithForm", "Account", FormMethod.Post, new { id = "form1" }))
 {
-    <li class="nav" style="margin-left: 25%;">
+   
+
+
+    <li class="nav" style="margin-left: 10%;">
         <label>Username:</label>
-        @Html.TextBox("userName", new { Style = "width: 52%; background-color: #b5f7f3; border: 1px solid teal" })
+        @Html.TextBox("userName", "", new { Style = "width: 52%; background-color: #b5f7f3; border: 1px solid teal" })
     </li>
     <li class="nav">
         <label>Password:</label>
-        @Html.TextBox("access", new { Style = "width: 52%; background-color: #b5f7f3; border: 1px solid teal" })
+        @Html.Password("access", "", new { Style = "width: 52%; background-color: #b5f7f3; border: 1px solid teal" })
     </li>
-    <li class="loginButton">
+    <li class="loginButton" style="margin-left: 3%">
         <input type="submit" value="Login" />
     </li>
 }
-<li style="margin-top: 2%; font-size: .8em; display: inline-block">
+<li class="regButton">
     <a href="@Url.Action("Register", "Home")" style="width: 10%; color: cyan">| Register</a>
 </li>

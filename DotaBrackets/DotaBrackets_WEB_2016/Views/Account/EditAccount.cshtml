@@ -1,0 +1,89 @@
+﻿
+@model DotaBrackets_WEB_2016.Models.ViewModel
+
+@{ 
+    DotaBrackets_WEB_2016.Models.ViewModel viewModel = new DotaBrackets_WEB_2016.Models.ViewModel();
+
+    if (Session["viewModel"] != null)
+    {
+        viewModel = (DotaBrackets_WEB_2016.Models.ViewModel)Session["viewModel"];
+    }
+}
+
+
+<div class="body">
+
+    <div class="regHead">
+        <h1>
+            Edit Account
+        </h1>
+    </div>
+
+    <div class="register">
+        <ul>
+            <li style="color:cyan; font-size: 1.4em; text-align: center; border-left: none">
+                My Info
+            </li>
+            @using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { id = "form1" }))
+            {
+                <li>
+                    <label style="float: left; width: 12%; color: white">Username:</label>
+                    @Html.TextBoxFor(m => m.gamer.userName, new { Value = viewModel.gamer.userName, Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
+                </li>
+                <li>
+                    <label style="float: left; width: 12%; color: white">Password:</label>
+                    @Html.PasswordFor(m => m.gamer.access, new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
+                </li>
+
+                <li>
+                    <label>What skill level are you?:</label>
+                    <p>
+                        @Html.DropDownListFor(m => m.gamer.traits.mmr, (SelectList)ViewBag.mmr, "--Select--", new { @Value = viewModel.gamer.traits.mmr })
+                    </p>
+                </li>
+                <li>
+                    <label>Which language do you speak?</label>
+                    <p>
+                        @Html.DropDownListFor(m => m.gamer.traits.language, (SelectList)ViewBag.lang, "--Select--", new { @Value = viewModel.gamer.traits.language })
+                    </p>
+                </li>
+                <li>
+                    <label>Do you have a mic?:</label>
+                    <p>
+                        @Html.DropDownListFor(m => m.gamer.traits.hasMic, (SelectList)ViewBag.hasMic, "--Select--", new { @Value = viewModel.gamer.traits.hasMic })
+                    </p>
+                </li>
+                <li>
+                    <label>Which Server do you prefer?:</label>
+                    <p>
+                        @Html.DropDownListFor(m => m.gamer.traits.server, (SelectList)ViewBag.serv, "--Select--", new { @Value = viewModel.gamer.traits.server })
+                    </p>
+                </li>
+                <li style="color:cyan; font-size: 1.4em; text-align: center;">
+                    Party Members
+                </li>
+                <li>
+                    <label>What skill level should your teammates be?:</label>
+                    <p>
+                        @Html.DropDownListFor(m => m.gamer.preferences.mmr, (SelectList)ViewBag.mmr, "--Select--", new { @Value = viewModel.gamer.preferences.mmr })
+                    </p>
+                </li>
+                <li>
+                    <label>Should your teammates have a mic?:</label>
+                    <p>
+                       @Html.DropDownListFor(m => m.gamer.preferences.hasMic, (SelectList)ViewBag.hasMic, "--Select--", new { @Value = viewModel.gamer.preferences.hasMic })
+                    </p>
+                </li>
+                <li>
+                    <label>What language do your teammates speak?</label>
+                    <p>
+                        @Html.DropDownListFor(m => m.gamer.preferences.language, (SelectList)ViewBag.lang, "--Select--", new { @Value = viewModel.gamer.preferences.language })
+                    </p>
+                </li>
+                <li style="text-align: center">
+                    <button>Submit</button>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

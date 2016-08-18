@@ -1,16 +1,6 @@
 ﻿
-@model DotaBrackets_WEB_2016.Models.ViewModel
 
 <div class="body">
-
-    <div class="header">
-        <ul class="headerUL">
-            <li class="logoLi" style="margin-left: 7%">
-                <a href="@Url.Action("Index", "Home")" class="logo">Dota <span class="logoSpan">[</span>Brackets<span class="logoSpan">]</span></a>
-            </li>
-            @Html.Partial("_loginPartial")
-        </ul>
-    </div>
 
     <div class="regHead">
         <h1>
@@ -27,32 +17,38 @@
 {
             <li>
                 <label style="float: left; width: 12%; color: white">Username:</label>
-                @Html.TextBox("userName", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
+                @Html.TextBox("userName", "", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
             </li>
             <li>
                 <label style="float: left; width: 12%; color: white">Password:</label>
-                @Html.TextBox("access", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
+                @Html.Password("access", "", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
             </li>
             <li>
                 <label style="float: left; width: 12%; color: white">SteamID:</label>
-                @Html.TextBox("steamID", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
+                @Html.TextBox("steamID", "", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
+            </li>
+            <li>
+                <label>What skill level are you?:</label>
+                <p>
+                    @Html.DropDownList("tmmr", (SelectList)ViewBag.mmr, "--Select--")
+                </p>
             </li>
             <li>
                 <label>Which language do you speak?</label>
                 <p>
-                    @Html.DropDownList("tlang")
+                    @Html.DropDownList("tlang", (SelectList)ViewBag.lang, "--Select--")
                 </p>
             </li>
             <li>
                 <label>Do you have a mic?:</label>
                 <p>
-                    @Html.DropDownList("thasMic")
+                    @Html.DropDownList("thasMic", (SelectList)ViewBag.hasMic, "--Select--")
                 </p>
             </li>
             <li>
                 <label>Which Server do you prefer?:</label>
                 <p>
-                    @Html.DropDownList("tserv")
+                    @Html.DropDownList("tserv", (SelectList)ViewBag.serv, "--Select--")
                 </p>
             </li>
             <li style="color:cyan; font-size: 1.4em; text-align: center;">
@@ -61,26 +57,41 @@
             <li>
                 <label>What skill level should your teammates be?:</label>
                 <p>
-                    @Html.DropDownList("pmmr")
+                    @Html.DropDownList("pmmr", (SelectList)ViewBag.mmr, "--Select--")
                 </p>
             </li>
             <li>
                 <label>Should your teammates have a mic?:</label>
                 <p>
-                    @Html.DropDownList("phasMic")
+                    @Html.DropDownList("phasMic", (SelectList)ViewBag.hasMic, "--Select--")
                 </p>
             </li>
             <li>
                 <label>What language do your teammates speak?</label>
                 <p>
-                    @Html.DropDownList("plang")
+                    @Html.DropDownList("plang", (SelectList)ViewBag.lang, "--Select--")
                 </p>
             </li>
             <li style="text-align: center">
                 <button>Submit</button>
             </li>
-        </ul>
 }
+        </ul>
     </div>
 </div>
+
+@section scripts
+{
+    <script>
+
+        $(document).ready(function () {
+           
+            $("#pmmr").change(function () {
+                var mmrID = $("#pmmr").val();
+                
+            });
+        });
+
+    </script>
+}
 

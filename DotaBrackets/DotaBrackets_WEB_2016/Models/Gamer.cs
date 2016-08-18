@@ -7,6 +7,12 @@ namespace DotaBrackets_WEB_2016.Models
 {
     public class Gamer
     {
+        public Gamer()
+        {
+            this.friendsList = new FriendsList();
+            this.preferences = new Preferences();
+            this.traits = new Traits();
+        }
         public int gamerID { get; set; }
         public int traitsID { get; set; }
         public int preferencesID { get; set; }

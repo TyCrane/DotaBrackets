@@ -10,9 +10,46 @@
 </head>
 
     <div class="container body-content">
-        @RenderBody()
-      
+       
+
+
+        @model DotaBrackets_WEB_2016.Models.ViewModel
+
+        @{ 
+            DotaBrackets_WEB_2016.Models.ViewModel myModel = new DotaBrackets_WEB_2016.Models.ViewModel();
+
+            if (Session["viewModel"] != null)
+            {
+                myModel = (DotaBrackets_WEB_2016.Models.ViewModel)Session["viewModel"];
+            }
+        }
+
+        <div class="header">
+            <ul class="headerUL">
+                <li class="logoLi" style="margin-left: 7%">
+                    <a href="@Url.Action("Index", "Home")" class="logo">Dota <span class="logoSpan">[</span>Brackets<span class="logoSpan">]</span></a>
+                </li>
+
+                <li class="menuButton">
+                    <input type="button" value="Home" onclick="location.href='@Url.Action("LoginNoParameter", "Account")'" />
+                </li>
+
+
+                @{ if (myModel.gamer.avatar != null)
+            {
+                        @Html.Partial("_loggedInPartial")
+                    }
+                    else
+                    {
+                        @Html.Partial("_LoginPartial")
+                    }
+                }
+            </ul>
+        </div>
  
+
+
+        @RenderBody()
     </div>
 
     @Scripts.Render("~/bundles/jquery")

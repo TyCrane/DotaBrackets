@@ -1,29 +1,10 @@
 ﻿
-@model DotaBrackets_WEB_2016.Models.ViewModel
-
-@{
-    if (Model == null)
-    {
-        DotaBrackets_WEB_2016.Models.ViewModel myModel = new DotaBrackets_WEB_2016.Models.ViewModel();
-    }
-
-}
 
 <div class="body">
-
-    <div class="header">
-        <ul class="headerUL">
-            <li class="logoLi" style="margin-left: 7%">
-                <a href="@Url.Action("Index", "Home")" class="logo">Dota <span class="logoSpan">[</span>Brackets<span class="logoSpan">]</span></a>
-            </li>
-            @Html.Partial("_loginPartial")
-        </ul>
-    </div>
-
     
     <div class="leftCol">
         @{
-            if (Model != null)
+            if (Model.rootObject.appnews.newsitems != null)
             {
                 foreach (DotaBrackets_WEB_2016.Models.Newsitem newsItem in Model.rootObject.appnews.newsitems)
                 {

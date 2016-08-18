@@ -1,0 +1,21 @@
+﻿
+
+@{ 
+    DotaBrackets_WEB_2016.Models.ViewModel viewModel = new DotaBrackets_WEB_2016.Models.ViewModel();
+
+    if (Session["viewModel"] != null)
+    {
+        viewModel = (DotaBrackets_WEB_2016.Models.ViewModel)Session["viewModel"];
+    }
+}
+
+
+
+    <li class="navAvatar" style="float: left; margin-left: 45%; margin-top: .5%">
+        @viewModel.gamer.userName
+    </li>
+    <li class="navAvatar" style="margin-left: .3%; margin-top: .5%">
+       <a href="@Url.Action("EditAccount", "Account")"> <img src="@viewModel.gamer.avatar" /> </a>
+    </li>
+
+

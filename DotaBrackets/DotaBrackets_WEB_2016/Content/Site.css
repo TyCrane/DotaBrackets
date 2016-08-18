@@ -89,17 +89,51 @@ table {
     padding: 8% 3%;
 }
 
+.regButton {
+    margin-top: 2.5%; 
+    font-size: .8em; 
+    float: left;
+}
+
 .nav {
     float: left;
     width: 18%;
     margin-left: 0%;
     color: white;
     padding-top: 2%;
+    margin-top: 1%;
+}
+
+.navAvatar {
+    float: left;
+    width: 7%;
+    margin-left: 0%;
+    color: white;
+    padding-top: 1.555%;
+    margin-top: 1%;
 }
 
 .loginButton {
-    display: inline-block;
+    float: left;
     margin-right: 1%;
+    margin-top: 2.222%;
+    margin-left: 3%;
+}
+
+.menuButton {
+    float: left;
+    margin-right: 1%;
+    margin-top: 2%;
+    margin-left: 3%;
+}
+
+.menuButton input{
+    margin-top: 2%;
+    display: inline-block;
+    color: white;
+    border: groove 1px cyan;
+    padding: 15%;
+    background-color:rgba(55, 94, 148, 1);
 }
 
 .loginButton input{

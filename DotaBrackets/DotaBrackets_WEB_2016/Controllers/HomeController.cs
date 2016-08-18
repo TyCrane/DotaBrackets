@@ -1,55 +1,48 @@
-﻿using System;
+﻿using DotaBrackets_WEB_2016.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Configuration;
-using DotaBrackets_WEB_2016.Models;
-using Newtonsoft.Json;
-using System.Net;
 
 namespace DotaBrackets_WEB_2016.Controllers
 {
     public class HomeController : Controller
     {
-        string apiKey = WebConfigurationManager.AppSettings["ApiKey"];
-
+        //*************************************************** Methods to return the index ****************************************************
+        //returns the index: overload (ViewModel)
         public ActionResult Index()
         {
-            ViewModel allArticles = new ViewModel();
+            ViewModel viewModel = new ViewModel();
 
-            string jsonResult;
-
-            using (WebClient wc = new WebClient())
+            if (Session["viewModel"] != null)
             {
-                try
-                {
-                    jsonResult = wc.DownloadString("http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=570&count=3&maxlength=300&format=json");
-                }
-                catch
-                {
-                    return View();
-                }
-
-                try
-                {
-                    allArticles.rootObject = JsonConvert.DeserializeObject<RootObject>(jsonResult);
-                }
-                catch
-                {
-                    return View();
-                }
+                viewModel = (ViewModel)Session["viewModel"];
             }
+            APIController api = new APIController();
 
-                return View(allArticles);
+            viewModel = api.GetSteamNews(viewModel);
+
+            return View(viewModel);
         }
 
-        public ActionResult Register()
+//************************************************* Methods to return Registration Page **********************************************
+    //returns the Registration page and fills the dropdown Boxes
+    public ActionResult Register()
         {
+            TypeController typeController = new TypeController();
+
+            SelectList mmrList = typeController.GetMmrTypeList();
+            SelectList hasMicList = typeController.GetHasMicType();
+            SelectList langList = typeController.GetLangType();
+            SelectList servList = typeController.GetServType();
+
+            ViewBag.mmr = mmrList;
+            ViewBag.hasMic = hasMicList;
+            ViewBag.lang = langList;
+            ViewBag.serv = servList;
 
             return View();
         }
-
-       
     }
 }
