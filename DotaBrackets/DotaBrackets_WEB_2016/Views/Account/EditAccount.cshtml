@@ -38,25 +38,25 @@
                 <li>
                     <label>What skill level are you?:</label>
                     <p>
-                        @Html.DropDownListFor(m => m.gamer.traits.mmr, (SelectList)ViewBag.mmr, "--Select--", new { @Value = viewModel.gamer.traits.mmr })
+                        @Html.DropDownListFor(m => m.gamer.traits.mmr, (SelectList)ViewBag.mmr, "--Select--", new { @Value = Convert.ToInt32(viewModel.gamer.traits.mmr) })
                     </p>
                 </li>
                 <li>
                     <label>Which language do you speak?</label>
                     <p>
-                        @Html.DropDownListFor(m => m.gamer.traits.language, (SelectList)ViewBag.lang, "--Select--", new { @Value = viewModel.gamer.traits.language })
+                        @Html.DropDownListFor(m => m.gamer.traits.language, (SelectList)ViewBag.lang, "--Select--", new { @Value = Convert.ToInt32(viewModel.gamer.traits.language) })
                     </p>
                 </li>
                 <li>
                     <label>Do you have a mic?:</label>
                     <p>
-                        @Html.DropDownListFor(m => m.gamer.traits.hasMic, (SelectList)ViewBag.hasMic, "--Select--", new { @Value = viewModel.gamer.traits.hasMic })
+                        @Html.DropDownListFor(m => m.gamer.traits.hasMic, (SelectList)ViewBag.hasMic, "--Select--", new { @Value = Convert.ToInt32(viewModel.gamer.traits.hasMic) })
                     </p>
                 </li>
                 <li>
                     <label>Which Server do you prefer?:</label>
                     <p>
-                        @Html.DropDownListFor(m => m.gamer.traits.server, (SelectList)ViewBag.serv, "--Select--", new { @Value = viewModel.gamer.traits.server })
+                        @Html.DropDownListFor(m => m.gamer.traits.server, (SelectList)ViewBag.serv, "--Select--", new { @Value = Convert.ToInt32(viewModel.gamer.traits.server) })
                     </p>
                 </li>
                 <li style="color:cyan; font-size: 1.4em; text-align: center;">
@@ -65,19 +65,19 @@
                 <li>
                     <label>What skill level should your teammates be?:</label>
                     <p>
-                        @Html.DropDownListFor(m => m.gamer.preferences.mmr, (SelectList)ViewBag.mmr, "--Select--", new { @Value = viewModel.gamer.preferences.mmr })
+                        @Html.DropDownListFor(m => m.gamer.preferences.mmr, (SelectList)ViewBag.mmr, "--Select--", new { @Value = Convert.ToInt32(viewModel.gamer.preferences.mmr) })
                     </p>
                 </li>
                 <li>
                     <label>Should your teammates have a mic?:</label>
                     <p>
-                       @Html.DropDownListFor(m => m.gamer.preferences.hasMic, (SelectList)ViewBag.hasMic, "--Select--", new { @Value = viewModel.gamer.preferences.hasMic })
+                       @Html.DropDownListFor(m => m.gamer.preferences.hasMic, (SelectList)ViewBag.hasMic, "--Select--", new { @Value = Convert.ToInt32(viewModel.gamer.preferences.hasMic) })
                     </p>
                 </li>
                 <li>
                     <label>What language do your teammates speak?</label>
                     <p>
-                        @Html.DropDownListFor(m => m.gamer.preferences.language, (SelectList)ViewBag.lang, "--Select--", new { @Value = viewModel.gamer.preferences.language })
+                        @Html.DropDownListFor(m => m.gamer.preferences.language, (SelectList)ViewBag.lang, "--Select--", new { @Value = Convert.ToInt32(viewModel.gamer.preferences.language) })
                     </p>
                 </li>
                 <li style="text-align: center">

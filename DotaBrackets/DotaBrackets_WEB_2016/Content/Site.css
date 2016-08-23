@@ -57,11 +57,13 @@ table {
     max-width: 100%;
     min-height: 1200px;
     background-repeat: no-repeat;
+    overflow: hidden;
 }
 
 /******************************************** Header *********************************************************/
 .headerUL {
-    background-color: rgba(55, 94, 148, 1);
+    /*background-color: rgba(55, 94, 148, 1);*/
+    background-color: #283b52;
     overflow: hidden;
     border-left: 10px solid cyan;
 }
@@ -153,7 +155,57 @@ table {
     margin-top: 10%;
 }
 
+.LoginPageContainer {
+    float: left;
+    width: 45%;
+    margin-left: 15%; 
+    margin-top: 10%;
+}
+
+.LoginHeaderButtons button {
+    float: left;
+    width: 20%;
+    margin-right: .1%;
+    background-color: rgba(55,94,148,1);
+    border: 1px solid cyan;
+    color: white;
+    border-bottom: none;
+}
+
+.LoginHeaderButtons button:hover {
+    background-color: cyan;
+    color: teal;
+}
+
+.innerColumn {
+    clear: both;
+    overflow: hidden;
+}
+
 .newsItem {
+    /*background-color: rgba(55, 94, 148, 1);*/
+    background-color: #283b52;
+    border-left: 3px ridge red;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10%;
+    padding: 5%;
+    color: white;
+    line-height: 1.5em;
+}
+
+.readMore {
+    background-color: rgba(55,94,148,1);
+    border: 1px solid cyan;
+    color: white;
+}
+
+.readMore:hover {
+    background-color: cyan;
+    color: teal;
+}
+
+.friendsContainer {
     background-color: rgba(55, 94, 148, 1);
     border-left: 3px ridge red;
     width: 100%;
@@ -162,6 +214,22 @@ table {
     padding: 5%;
     color: white;
     line-height: 1.5em;
+}
+
+.matchContainer {
+    background-color: rgba(55, 94, 148, 1);
+    border-left: 3px ridge red;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10%;
+    padding: 5%;
+    color: white;
+    line-height: 1.5em;
+}
+
+.newsContent {
+    width: 90%;
+    color: white;
 }
 
 .newsTitle {
@@ -175,6 +243,7 @@ table {
 
 .rightCol {
     background-color: rgba(55, 94, 148, 1);
+    /*background-color: #283b52;*/
     border-right: 3px ridge red;
     float: left;
     width: 23%;
@@ -182,6 +251,9 @@ table {
     margin-top: 10%;
     text-align: center;
     color: white;
+}
+
+.rightCol li {
 }
 
 
@@ -210,7 +282,8 @@ table {
 }
 
 .register li {
-    background-color: rgba(55, 94, 148, 1);
+    /*background-color: rgba(55, 94, 148, 1);*/
+    background-color: #385374;
     color: white;
     padding: 2%;
     border-left: 4px solid cyan;
@@ -226,4 +299,42 @@ a {
     color: cyan;
     text-decoration: none;
     cursor: auto;
+}
+
+#divChat li {
+   list-style: none;
+   color: white;
+}
+
+#divChat {
+    text-align: left;
+    margin-bottom: 1%;
+    padding-bottom: 2%;
+    height: 120px;
+    overflow: auto;
+    padding-left: 3%;
+}
+
+.chatRoom {
+    background-color:  #283b52;
+    text-align: left;
+    border-left: 1px solid teal;
+    border-bottom: 1px solid teal;
+}
+
+#msg {
+    padding-top: 1%;
+    background-color: floralwhite;
+    width: 70%;
+    margin-left: 4%;
+    color: black;
+    margin-bottom: 2%;
+}
+
+#name {
+    display: none;
+}
+
+#chatContainer {
+    /*border: 2px solid teal;*/
 }

@@ -8,7 +8,8 @@ namespace DotaBrackets_WEB_2016
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+            //ConfigureAuth(app);
+            app.MapSignalR();
         }
     }
 }

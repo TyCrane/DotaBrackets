@@ -111,5 +111,37 @@ namespace DotaBrackets_WEB_2016.Controllers
                 return viewModel;
             }
         }
+
+//************************************************ Gets Dota 2 Information **********************************************************
+    //
+    public ViewModel GetDotaSummaries(ViewModel viewModel)
+        {
+            string jsonResult;
+            string url;
+
+            url = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?key=" + apiKey + "&matches_requested=1&account_id=" + viewModel.gamer.dota2ID;
+
+            using (WebClient wc = new WebClient())
+            {
+                jsonResult = wc.DownloadString(url);
+
+                viewModel.dotaUser = JsonConvert.DeserializeObject<RootObject3>(jsonResult);
+            }
+
+            if (viewModel.dotaUser.result.matches != null)
+            {
+
+                Match thisMatch = new Match();
+                thisMatch = viewModel.dotaUser.result.matches[0];
+                viewModel.gamer.dotaMatch = thisMatch;
+
+                return viewModel;
+            }
+            //if the api call failed
+            else
+            {
+                return viewModel;
+            }
+        }
     }
 }

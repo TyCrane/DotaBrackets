@@ -2,38 +2,236 @@
 
 <div class="body">
 
-
-    <div class="leftCol">
-        @{
-            if (Model.rootObject.appnews.newsitems != null)
-            {
-                DotaBrackets_WEB_2016.Models.Newsitem newsItem = new DotaBrackets_WEB_2016.Models.Newsitem();
-                newsItem = Model.rootObject.appnews.newsitems[0];
-
-                    <div class="newsItem">
-                        <ul>
-                            <li style="text-align: right; margin-bottom: 1%; color:  #b5f7f3;">
-                                @Html.Raw(newsItem.feedlabel)
-                            </li>
-                            <li class="newsTitle">
-                                <a href="@Html.Raw(newsItem.url)">@Html.Raw(newsItem.title)</a>
-                            </li>
-                            <li>
-                                @Html.Raw(newsItem.contents)
-                            </li>
-                        </ul>
-                    </div>
-            }
-        }
-    </div>
-
-    <div class="rightCol">
-        <ul class="rightColUL">
-            <li>
-                Start Searching
+    <div class="LoginPageContainer">
+        <ul>
+            <li class="LoginHeaderButtons">
+                <button id="newsTab">News</button>
+                <button id="historyTab">History</button>
+                <button id="friendsTab">Friends</button>
             </li>
         </ul>
+        <div class="innerColumn">
+            <div class="news">
+                @{
+                    if (Model.rootObject.appnews.newsitems[0] != null)
+                    {
+                        DotaBrackets_WEB_2016.Models.Newsitem newsItem = new DotaBrackets_WEB_2016.Models.Newsitem();
+                        newsItem = Model.rootObject.appnews.newsitems[0];
+
+                        <div class="newsItem">
+                            <ul>
+                                <li style="text-align: right; margin-bottom: 1%; color:  #b5f7f3; padding-right: 8%">
+                                    @Html.Raw(newsItem.feedlabel)
+                                </li>
+                                <li class="newsTitle">
+                                    <a href="@Html.Raw(newsItem.url)">@Html.Raw(newsItem.title)</a>
+                                </li>
+                                <li class="newsContent">
+                                    @Html.Raw(newsItem.contents)
+                                </li>
+                                <li>
+                                    <button class="readMore">Read More</button>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="newsItem">
+                            <ul>
+                                <li>
+                                    News feed failed to load
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                }
+            </div>
+
+            <div class="matchContainer">
+                @{
+                    if (Model.gamer.dotaMatch != null)
+                    {
+                        DotaBrackets_WEB_2016.Models.Match match = new DotaBrackets_WEB_2016.Models.Match();
+                        match = Model.gamer.dotaMatch;
+
+                        <div class="match">
+                            <ul>
+                                <li>
+                                   Lobby Type: @match.lobby_type
+                                </li>
+                                <li>
+                                   Match ID: @match.match_id
+                                </li>
+                                <li>
+                                   Players: 
+                                    @{ 
+                                        foreach (DotaBrackets_WEB_2016.Models.DotaPlayer player in match.dotaPlayers)
+                                        {
+                                            <li>
+                                                Account ID: @player.account_id
+                                            </li>
+                                            <li>
+                                                Hero: @player.hero_id
+                                            </li>
+                                        }
+                                     }
+                                </li>
+                            </ul>
+                        </div>
+                                        }
+                                        else
+                                        {
+                        <div class="match">
+                            <ul>
+                                <li>
+                                    Match history failed to load
+                                </li>
+                            </ul>
+                        </div>
+                                        }
+                }
+            </div>
+
+            <div class="friendsContainer">
+                @{
+                    if (Model.gamer.friendsList.friendsList != null)
+                    {
+                        DotaBrackets_WEB_2016.Models.FriendsList friendsList = new DotaBrackets_WEB_2016.Models.FriendsList();
+                        friendsList = Model.gamer.friendsList;
+
+                        <div class="friends">
+                            <ul>
+                                @{ foreach (DotaBrackets_WEB_2016.Models.FriendID friend in friendsList.friendsList)
+                                    {
+                                        <li>
+                                           UserName: @friend.userName
+                                        </li>
+                                        <li>
+                                           SteamID: @friend.steamID
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                                    }
+                                    else
+                                    {
+                        <div class="friends">
+                            <ul>
+                                <li>
+                                    You have no friends
+                                </li>
+                            </ul>
+                        </div>
+                                    }
+                }
+            </div>
+
+            <div class="friends">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="rightCol" id="chatContainer">
+
+        <div>
+            <div style="visibility: hidden" id="groupName"></div>
+        </div>
+
+        <div id="partyMembers">
+            hi
+        </div>
+
+        <ul class="rightColUL">
+            <li style="border: 1px solid cyan; border-bottom: none">
+                Start Searching
+            </li>
+            <li>
+                <button id="btnSearch">Search</button>
+            </li>
+        </ul>
+        <div class="chatRoom">
+            <li id="name">@Model.gamer.userName</li>
+            <div id="divChat"></div>
+            <input type="text" id="msg" />
+            <input type="button" id="btnSend" value="Send" />
+        </div>
     </div>
 
 </div>
+
+
+
+@section scripts
+{
+<script src="~/signalr/hubs"></script>
+    <script>
+
+        $(document).ready(function () {
+            //displays and hides tabs in left column of page
+            $(".matchContainer").hide();
+            $(".friendsContainer").hide();
+            $("#newsTab").click(function () {
+                $(".news").show();
+                $(".matchContainer").hide();
+                $(".friendsContainer").hide();
+            });
+            $("#historyTab").click(function () {
+                $(".news").hide();
+                $(".matchContainer").show();
+                $(".friendsContainer").hide();
+            });
+            $("#friendsTab").click(function () {
+                $(".news").hide();
+                $(".matchContainer").hide();
+                $(".friendsContainer").show();
+            });
+
+            var _name = $("#name").text();
+            $("#name").text(_name);
+            $("#msg").val('');
+
+            //connects the hub and the client
+            var chatProxy = $.connection.signalRChatHub;
+
+            var data = @Html.Raw(Json.Encode(Model.gamer));
+            data = JSON.stringify(data);
+
+            $.connection.hub.start().done(function () {
+
+                //starts search and puts client in a group. Calls controller to change 'isSearching' to true
+                $("#btnSearch").click(function () {
+                    $.post('@Url.Action("actionName", "ControllerName")', { jsonData: data }, function (returnData) {
+                        data = returnData;
+                    });
+                    chatProxy.server.joinGroup(data);
+                });
+
+                //button to send a message to the chatroom
+                $("#btnSend").click(function () {
+                    chatProxy.server.broadCastGroupMessage($("#name").text(), $("#msg").val(), $("#groupName").text());
+                    $("#msg").val('').focus();
+                });
+            });
+            
+            //recieves messages in group chat to the chatroom
+            chatProxy.client.addChatMessage = function (msgFrom, msg) {
+                $("#divChat").append('<li><strong>' + msgFrom + '</strong>:&nbsp;&nbsp;' + msg + '</li>')
+            };
+
+            //adds the name of the connected clients group to a hidden field on the page
+            chatProxy.client.addContosoChatMessageToPage = function (groupName) {
+                $("#groupName").append('<li>'+ groupName + '</li>')
+            };
+
+            //adds matched party members to the page
+            chatProxy.client.recievePartyMember = function (userName, steamID) {
+                $("#partyMembers").append('<li>' + userName + 'hello' + '</li>' + '<li>' + steamID + '</li>')
+            };
+        });
+
+    </script>    
+}
 

@@ -18,7 +18,7 @@ namespace DotaBrackets_WEB_2016.Controllers
             {
                 ViewModel viewModel = new ViewModel();
 
-
+                
                 viewModel.gamer.userName = col["userName"];
                 viewModel.gamer.access = col["access"];
                 viewModel.gamer.traits.mmr = Convert.ToInt32(col["tmmr"]);
@@ -86,6 +86,7 @@ namespace DotaBrackets_WEB_2016.Controllers
                 APIController api = new APIController();
 
                 viewModel = api.GetSteamNews(viewModel);
+                viewModel = api.GetDotaSummaries(viewModel);
 
                 Session["viewModel"] = viewModel;
 
@@ -120,6 +121,7 @@ namespace DotaBrackets_WEB_2016.Controllers
                 APIController api = new APIController();
 
                 incModel = api.GetSteamNews(incModel);
+                incModel = api.GetDotaSummaries(incModel);
 
                 Session["viewModel"] = incModel;
 
@@ -157,18 +159,30 @@ namespace DotaBrackets_WEB_2016.Controllers
         public ActionResult Edit(ViewModel viewModel)
         {
             AccountDataController dataController = new AccountDataController();
+            ViewModel steamUser = new ViewModel();
+
+            steamUser = (ViewModel)Session["viewModel"];
+            viewModel.gamer.avatar = steamUser.gamer.avatar;
+            viewModel.gamer.steamID = steamUser.gamer.steamID;
+            viewModel.gamer.traitsID = steamUser.gamer.traitsID;
+            viewModel.gamer.preferencesID = steamUser.gamer.preferencesID;
+            viewModel.gamer.gamerID = steamUser.gamer.gamerID;
 
             viewModel = dataController.EditUser(viewModel);
+            
 
             //new user added, now login
             if (viewModel.gamer.userName != null)
             {
+                APIController api = new APIController();
+
+                viewModel = api.GetPlayerSummaries(viewModel);
+                viewModel = api.GetSteamNews(viewModel);
                 //put new account info into session
                 Session["viewModel"] = viewModel;
 
                 //return success page
-                //TODO: make updatesuccesful page in account folder
-                return View("UpdateSuccesful");
+                return View("UpdateSuccesful", viewModel);
             }
             //new user not added, already exists
             else
@@ -179,6 +193,7 @@ namespace DotaBrackets_WEB_2016.Controllers
         }
 
 //************************************************ Methods to Return the Loggedin Page ***********************************************
+        //called when navigating between menus
         public ActionResult LoginNoParameter()
         {
             ViewModel viewModel = new ViewModel();
@@ -202,6 +217,7 @@ namespace DotaBrackets_WEB_2016.Controllers
                 APIController api = new APIController();
 
                 viewModel = api.GetSteamNews(viewModel);
+                viewModel = api.GetDotaSummaries(viewModel);
 
                 Session["viewModel"] = viewModel;
 

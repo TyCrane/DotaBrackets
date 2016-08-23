@@ -170,6 +170,8 @@ public static string GetSwcSH1(string access)
                 viewModel.gamer = new Gamer()
                 {
                     gamerID = drRow.Field<int>("gamerID"),
+                    traitsID = drRow.Field<int>("traitsID"),
+                    preferencesID = drRow.Field<int>("preferencesID"),
                     userName = drRow.Field<string>("userName"),
                     steamID = drRow.Field<long>("steamID"),
                     dota2ID = drRow.Field<int>("dota2ID"),
@@ -237,6 +239,8 @@ public static string GetSwcSH1(string access)
                 viewModel.gamer = new Gamer()
                 {
                     gamerID = drRow.Field<int>("gamerID"),
+                    traitsID = drRow.Field<int>("traitsID"),
+                    preferencesID = drRow.Field<int>("preferencesID"),
                     userName = drRow.Field<string>("userName"),
                     steamID = drRow.Field<long>("steamID"),
                     dota2ID = drRow.Field<int>("dota2ID"),
@@ -310,31 +314,24 @@ public static string GetSwcSH1(string access)
                     db.AddInParameter(dbCommand, "thasMic", DbType.Int32, viewModel.gamer.traits.hasMic);
                     db.AddInParameter(dbCommand, "tserv", DbType.Int32, viewModel.gamer.traits.server);
                     db.AddInParameter(dbCommand, "tmmr", DbType.Int32, viewModel.gamer.traits.mmr);
-                    db.AddInParameter(dbCommand, "gamerID", DbType.Int32, viewModel.gamer.gamerID);
-                    db.AddOutParameter(dbCommand, "traitsID", DbType.Int32, sizeof(Int32));
+                    db.AddInParameter(dbCommand, "traitsID", DbType.Int32, viewModel.gamer.traitsID);
                     db.ExecuteNonQuery(dbCommand);
 
 
-                    dbCommand = db.GetStoredProcCommand("ins_Preferences");
+                    dbCommand = db.GetStoredProcCommand("upd_Preferences");
 
                     db.AddInParameter(dbCommand, "pmmr", DbType.Int32, viewModel.gamer.preferences.mmr);
                     db.AddInParameter(dbCommand, "phasMic", DbType.Int32, viewModel.gamer.preferences.hasMic);
                     db.AddInParameter(dbCommand, "plang", DbType.Int32, viewModel.gamer.preferences.language);
-                    db.AddInParameter(dbCommand, "gamerID", DbType.Int32, viewModel.gamer.gamerID);
+                    db.AddInParameter(dbCommand, "preferencesID", DbType.Int32, viewModel.gamer.preferencesID);
                     db.ExecuteNonQuery(dbCommand);
 
 
 
-                    dbCommand = db.GetStoredProcCommand("ins_Gamer");
-                    db.AddInParameter(dbCommand, "traitsID", DbType.Int32, viewModel.gamer.traitsID);
-                    db.AddInParameter(dbCommand, "preferencesID", DbType.Int32, viewModel.gamer.preferencesID);
+                    dbCommand = db.GetStoredProcCommand("upd_Gamer");
                     db.AddInParameter(dbCommand, "gamerID", DbType.Int32, viewModel.gamer.gamerID);
                     db.AddInParameter(dbCommand, "userName", DbType.String, viewModel.gamer.userName);
                     db.AddInParameter(dbCommand, "access", DbType.String, viewModel.gamer.access);
-                    db.AddInParameter(dbCommand, "steamID", DbType.Int64, viewModel.gamer.steamID);
-                    db.AddInParameter(dbCommand, "dota2ID", DbType.Int32, viewModel.gamer.dota2ID);
-                    db.AddInParameter(dbCommand, "avatar", DbType.String, viewModel.gamer.avatar);
-                    db.AddOutParameter(dbCommand, "gamerID", DbType.Int32, sizeof(Int32));
                     db.ExecuteNonQuery(dbCommand);
 
 

@@ -19,6 +19,8 @@ AS
 		DECLARE @thisGamerID INT
 
 		SELECT	ISNULL(gamer.gamerID, 0) AS gamerID,
+				ISNULL(gamer.traitsID, 0) AS traitsID,
+				ISNULL(gamer.preferencesID, 0) AS preferencesID,
 				ISNULL(gamer.userName, '') AS userName,
 				ISNULL(gamer.steamID, 0) AS steamID,
 				ISNULL(gamer.dota2ID, 0) AS dota2ID,

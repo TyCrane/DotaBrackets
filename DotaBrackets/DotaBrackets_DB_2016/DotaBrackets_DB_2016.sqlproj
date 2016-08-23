@@ -77,5 +77,8 @@
     <Build Include="StoredProcs\get_AllLangType.sql" />
     <Build Include="StoredProcs\get_AllServType.sql" />
     <Build Include="StoredProcs\get_LoginCheck.sql" />
+    <Build Include="StoredProcs\upd_Traits.sql" />
+    <Build Include="StoredProcs\upd_Preferences.sql" />
+    <Build Include="StoredProcs\upd_Gamer.sql" />
   </ItemGroup>
 </Project>
