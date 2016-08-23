@@ -12,89 +12,147 @@ namespace DotaBrackets_WEB_2016.Classes
     public class SignalRChatHub : Hub
     {
         public static AllGroups allGroups = new AllGroups();
-        public static Group group = new Group();
+        public Group removeFromGroup = new Group();
         public int i;
         public int n;
-
-
-        public void BroadCastMessage(string msgFrom, string msg)
-        {
-            Clients.All.recieveMessage(msgFrom, msg);
-        }
 
         //allows messages within a group
         public void BroadCastGroupMessage(string msgFrom, string msg, string groupName)
         {
-            Clients.Group(groupName).addChatMessage(msgFrom, msg);
+            try
+            {
+                Clients.Group(groupName).addChatMessage(msgFrom, msg);
+            }
+            catch
+            {
+                Clients.Caller.addChatMessage("Server", "Not Connected");
+            }
         }
 
-
-        public void GetPartyMembers(string userName, string steamID, string groupName)
+        //sends matched party member's username and steamid to page
+        public void GetPartyMembers(string groupName)
         {
-            Clients.Group(groupName).recievePartyMember(userName, steamID);
+            try
+            {
+                Group thisGroup = allGroups.allGroups.Single(group => group.groupName == groupName);
+                Clients.Group(groupName).recievePartyMember(thisGroup);
+            }
+            catch
+            {
+                return;
+            }
         }
 
+        //sends the name of the clients connected group to the page (used to chat with group members)
         public void GetGroupName(string groupName)
         {
-            Clients.Caller.addContosoChatMessageToPage(groupName);
+            Clients.Group(groupName).addContosoChatMessageToPage(groupName);
         }
 
-
-        public void JoinGroup(string data)
+        //allows users to leave all groups
+        public void LeaveGroup(string data)
         {
             Gamer thisGamer = new Gamer();
             thisGamer = JsonConvert.DeserializeObject<Gamer>(data);
-            string groupName;
 
-
-            for (i = 0; i < allGroups.allGroups.Count; i++) ;
-
-            if(allGroups.allGroups.Count == 0)
+            if (allGroups.allGroups.Count != 0)
             {
-                allGroups.allGroups.Add(new Group());
-                allGroups.allGroups[0].members.Add(thisGamer);
-                Groups.Add(Context.ConnectionId, thisGamer.gamerID.ToString());
-                allGroups.allGroups[0].groupName = thisGamer.gamerID.ToString();
-                groupName = thisGamer.gamerID.ToString();
-                GetGroupName(groupName);
-                GetPartyMembers(thisGamer.userName, thisGamer.steamID.ToString(), groupName);
-            }
-            else
-            {
-                foreach (Group group in allGroups.allGroups)
+                for (int i = 0; i < allGroups.allGroups.Count; i++)
                 {
-                    if (group.members.Count != 0)
+                    if (allGroups.allGroups[i].members.Count != 0)
                     {
-                        foreach (Gamer excGamer in group.members)
+                        try
                         {
-                            while (thisGamer.isSearching == true)
-                            {
-                                if (CheckMatch(thisGamer, excGamer) == true && group.members.Count < 5)
-                                {
-                                    Groups.Add(Context.ConnectionId, group.members[0].gamerID.ToString());
-                                    groupName = group.members[0].gamerID.ToString();
-                                    GetGroupName(groupName);
-                                    GetPartyMembers(thisGamer.userName, thisGamer.steamID.ToString(), groupName);
-                                }
-                                else
-                                {
-                                    allGroups.allGroups.Add(new Group());
-                                    allGroups.allGroups[i + 1].members.Add(thisGamer);
-                                    Groups.Add(Context.ConnectionId, thisGamer.gamerID.ToString());
-                                    groupName = thisGamer.gamerID.ToString();
-                                    GetGroupName(groupName);
-                                    GetPartyMembers(thisGamer.userName, thisGamer.steamID.ToString(), groupName);
-                                }
-                            }
+                            Groups.Remove(Context.ConnectionId, allGroups.allGroups[i].members[0].gamerID.ToString());
+                            allGroups.allGroups[i].members.RemoveAll(s => s.steamID == thisGamer.steamID);
+                            GetPartyMembers(allGroups.allGroups[i].groupName);
+                        }
+                        catch
+                        {
+                            return;
                         }
                     }
                 }
             }
         }
 
+        //allows users to join a group
+        public void JoinGroup(string data)
+        {
+            Gamer thisGamer = new Gamer();
+            thisGamer = JsonConvert.DeserializeObject<Gamer>(data);
 
-
-
+            if (allGroups.allGroups.Count != 0)
+            {
+                for (int i = 0; i < allGroups.allGroups.Count; i++)
+                {
+                    //if the gamer is still looking for a match
+                    if (thisGamer.isSearching == false)
+                    {
+                        //if the group has members in it
+                        if (allGroups.allGroups[i].members.Count != 0)
+                        {
+                            //if the group has less than 5 members and there is a match 
+                            if (allGroups.allGroups[i].members.Count < 5 && CheckMatch(thisGamer, allGroups.allGroups[i].members[0]) == true)
+                            {
+                                allGroups.allGroups[i].members.Add(thisGamer);
+                                Groups.Add(Context.ConnectionId, allGroups.allGroups[i].groupName);
+                                GetGroupName(allGroups.allGroups[i].groupName);
+                                GetPartyMembers(allGroups.allGroups[i].groupName);
+                                thisGamer.isSearching = true;
+                            }
+                            //if we reach the end of the groups and no match was found
+                            //then create a group and add it to the end of the list
+                            else if (i == allGroups.allGroups.Count)
+                            {
+                                allGroups.allGroups.Add(new Group());
+                                allGroups.allGroups[i + 1].members.Add(thisGamer);
+                                allGroups.allGroups[i + 1].groupName = thisGamer.gamerID.ToString();
+                                Groups.Add(Context.ConnectionId, thisGamer.gamerID.ToString());
+                                GetGroupName(thisGamer.gamerID.ToString());
+                                GetPartyMembers(thisGamer.gamerID.ToString());
+                                thisGamer.isSearching = true;
+                            }
+                            //there was no match on this iteration
+                            //return to loop for next iteration
+                            else
+                            {
+                                return;
+                            }
+                        }
+                        //the current iterated group has no members in it
+                        else
+                        {
+                            allGroups.allGroups[i].members.Add(thisGamer);
+                            allGroups.allGroups[i].groupName = thisGamer.gamerID.ToString();
+                            Groups.Add(Context.ConnectionId, thisGamer.gamerID.ToString());
+                            GetGroupName(thisGamer.gamerID.ToString());
+                            GetPartyMembers(thisGamer.gamerID.ToString());
+                            thisGamer.isSearching = true;
+                        }
+                    }
+                    //if the match was found but there are more groups to iterate through
+                    //iterate through till end while taking no actions
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
+            //the list of groups is empty
+            //create a new group in the list
+            else
+            {
+                allGroups.allGroups.Add(new Group());
+                allGroups.allGroups[0].members.Add(thisGamer);
+                allGroups.allGroups[0].groupName = thisGamer.gamerID.ToString();
+                Groups.Add(Context.ConnectionId, thisGamer.gamerID.ToString());
+                GetGroupName(thisGamer.gamerID.ToString());
+                GetPartyMembers(thisGamer.gamerID.ToString());
+                thisGamer.isSearching = true;
+            }
+            
+        }
 
 
         public bool CheckMatch(Gamer incGamer, Gamer excGamer)

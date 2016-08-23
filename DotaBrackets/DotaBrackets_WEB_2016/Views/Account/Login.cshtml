@@ -140,8 +140,11 @@
             <div style="visibility: hidden" id="groupName"></div>
         </div>
 
+        <div>
+            Party Members:
+        </div>
         <div id="partyMembers">
-            hi
+            
         </div>
 
         <ul class="rightColUL">
@@ -150,6 +153,7 @@
             </li>
             <li>
                 <button id="btnSearch">Search</button>
+                <button id="btnStopSearching">Stop Searching</button>
             </li>
         </ul>
         <div class="chatRoom">
@@ -203,10 +207,20 @@
 
                 //starts search and puts client in a group. Calls controller to change 'isSearching' to true
                 $("#btnSearch").click(function () {
-                    $.post('@Url.Action("actionName", "ControllerName")', { jsonData: data }, function (returnData) {
+                    chatProxy.server.joinGroup(data);
+                    $.post('@Url.Action("StartSearching", "SignalRGroups")', { incData: data }, function (returnData) {
                         data = returnData;
                     });
-                    chatProxy.server.joinGroup(data);
+                });
+
+                //stops search and removes client from group. Calls controller to change 'isSearching' to false
+                $("#btnStopSearching").click(function () {
+                    chatProxy.server.leaveGroup(data);
+                    $.post('@Url.Action("StopSearching", "SignalRGroups")', {incData: data }, function (returnData) {
+                        data = returnData;
+                    });
+                    $("#partyMembers").html('');
+                    $("#groupName").html('');
                 });
 
                 //button to send a message to the chatroom
@@ -227,8 +241,13 @@
             };
 
             //adds matched party members to the page
-            chatProxy.client.recievePartyMember = function (userName, steamID) {
-                $("#partyMembers").append('<li>' + userName + 'hello' + '</li>' + '<li>' + steamID + '</li>')
+            chatProxy.client.recievePartyMember = function (thisGroup) {
+                $('#partyMembers').empty();
+                thisGroup.members.forEach(function (member) {
+                    console.log(thisGroup);
+                    $("#partyMembers").append('<p>' + member.userName + '</p>' + '<p>' + member.steamID + '</p>');
+                })
+               
             };
         });
 

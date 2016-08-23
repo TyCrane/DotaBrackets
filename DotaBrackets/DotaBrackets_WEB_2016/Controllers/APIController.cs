@@ -130,12 +130,19 @@ namespace DotaBrackets_WEB_2016.Controllers
 
             if (viewModel.dotaUser.result.matches != null)
             {
-
                 Match thisMatch = new Match();
-                thisMatch = viewModel.dotaUser.result.matches[0];
-                viewModel.gamer.dotaMatch = thisMatch;
 
-                return viewModel;
+                try
+                {
+                    thisMatch = viewModel.dotaUser.result.matches[0];
+                    viewModel.gamer.dotaMatch = thisMatch;
+
+                    return viewModel;
+                }
+                catch
+                {
+                    return viewModel;
+                }
             }
             //if the api call failed
             else
