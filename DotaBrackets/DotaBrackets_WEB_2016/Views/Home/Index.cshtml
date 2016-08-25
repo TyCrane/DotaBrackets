@@ -19,6 +19,11 @@
                         <li>
                             @Html.Raw(newsItem.contents)
                         </li>
+                        <li>
+                            <a href="@Html.Raw(newsItem.url)">
+                                <button class="readMore">Read More</button>
+                            </a>
+</li>
                     </ul>
                 </div>
                     }

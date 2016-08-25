@@ -6,6 +6,7 @@ using Microsoft.AspNet.SignalR;
 using DotaBrackets_WEB_2016.Models;
 using Microsoft.AspNet.SignalR.Hubs;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace DotaBrackets_WEB_2016.Classes
 {
@@ -46,11 +47,37 @@ namespace DotaBrackets_WEB_2016.Classes
         //sends the name of the clients connected group to the page (used to chat with group members)
         public void GetGroupName(string groupName)
         {
-            Clients.Group(groupName).addContosoChatMessageToPage(groupName);
+            Clients.Caller.addContosoChatMessageToPage(groupName);
+        }
+
+        //if the user disconnects
+        public override Task OnDisconnected(bool stopCalled = true)
+        {
+            if (allGroups.allGroups.Count != 0)
+            {
+                for (int i = 0; i < allGroups.allGroups.Count; i++)
+                {
+                    if (allGroups.allGroups[i].members.Count != 0)
+                    {
+                        try
+                        {
+                            //static group, and updates remaining group members
+                            allGroups.allGroups[i].members.RemoveAll(s => s.connectionID == Context.ConnectionId);
+                            GetPartyMembers(allGroups.allGroups[i].groupName);
+                        }
+                        catch
+                        {
+                            return null;
+                        }
+                    }
+                }
+            }
+
+            return base.OnDisconnected(stopCalled);
         }
 
         //allows users to leave all groups
-        public void LeaveGroup(string data)
+        public async Task LeaveGroup(string data)
         {
             Gamer thisGamer = new Gamer();
             thisGamer = JsonConvert.DeserializeObject<Gamer>(data);
@@ -63,7 +90,8 @@ namespace DotaBrackets_WEB_2016.Classes
                     {
                         try
                         {
-                            Groups.Remove(Context.ConnectionId, allGroups.allGroups[i].members[0].gamerID.ToString());
+                            //removes user from signalrGroup, static group, and updates remaining group members
+                            await Groups.Remove(Context.ConnectionId, allGroups.allGroups[i].groupName);
                             allGroups.allGroups[i].members.RemoveAll(s => s.steamID == thisGamer.steamID);
                             GetPartyMembers(allGroups.allGroups[i].groupName);
                         }
@@ -76,8 +104,14 @@ namespace DotaBrackets_WEB_2016.Classes
             }
         }
 
+        //join group async method
+        public async Task JoinRoom(string roomName)
+        {
+            await Groups.Add(Context.ConnectionId, roomName);
+        }
+
         //allows users to join a group
-        public void JoinGroup(string data)
+        public async Task JoinGroup(string data)
         {
             Gamer thisGamer = new Gamer();
             thisGamer = JsonConvert.DeserializeObject<Gamer>(data);
@@ -95,8 +129,9 @@ namespace DotaBrackets_WEB_2016.Classes
                             //if the group has less than 5 members and there is a match 
                             if (allGroups.allGroups[i].members.Count < 5 && CheckMatch(thisGamer, allGroups.allGroups[i].members[0]) == true)
                             {
+                                thisGamer.connectionID = Context.ConnectionId;
                                 allGroups.allGroups[i].members.Add(thisGamer);
-                                Groups.Add(Context.ConnectionId, allGroups.allGroups[i].groupName);
+                                await JoinRoom(allGroups.allGroups[i].groupName);
                                 GetGroupName(allGroups.allGroups[i].groupName);
                                 GetPartyMembers(allGroups.allGroups[i].groupName);
                                 thisGamer.isSearching = true;
@@ -106,9 +141,10 @@ namespace DotaBrackets_WEB_2016.Classes
                             else if (i == allGroups.allGroups.Count)
                             {
                                 allGroups.allGroups.Add(new Group());
+                                thisGamer.connectionID = Context.ConnectionId;
                                 allGroups.allGroups[i + 1].members.Add(thisGamer);
                                 allGroups.allGroups[i + 1].groupName = thisGamer.gamerID.ToString();
-                                Groups.Add(Context.ConnectionId, thisGamer.gamerID.ToString());
+                                await JoinRoom(thisGamer.gamerID.ToString());
                                 GetGroupName(thisGamer.gamerID.ToString());
                                 GetPartyMembers(thisGamer.gamerID.ToString());
                                 thisGamer.isSearching = true;
@@ -123,9 +159,10 @@ namespace DotaBrackets_WEB_2016.Classes
                         //the current iterated group has no members in it
                         else
                         {
+                            thisGamer.connectionID = Context.ConnectionId;
                             allGroups.allGroups[i].members.Add(thisGamer);
                             allGroups.allGroups[i].groupName = thisGamer.gamerID.ToString();
-                            Groups.Add(Context.ConnectionId, thisGamer.gamerID.ToString());
+                            await JoinRoom(thisGamer.gamerID.ToString());
                             GetGroupName(thisGamer.gamerID.ToString());
                             GetPartyMembers(thisGamer.gamerID.ToString());
                             thisGamer.isSearching = true;
@@ -144,17 +181,18 @@ namespace DotaBrackets_WEB_2016.Classes
             else
             {
                 allGroups.allGroups.Add(new Group());
+                thisGamer.connectionID = Context.ConnectionId;
                 allGroups.allGroups[0].members.Add(thisGamer);
                 allGroups.allGroups[0].groupName = thisGamer.gamerID.ToString();
-                Groups.Add(Context.ConnectionId, thisGamer.gamerID.ToString());
+                await JoinRoom(thisGamer.gamerID.ToString());
                 GetGroupName(thisGamer.gamerID.ToString());
                 GetPartyMembers(thisGamer.gamerID.ToString());
                 thisGamer.isSearching = true;
             }
             
         }
-
-
+        
+        //checks to see if the pref's of the group the client is trying to join matches the clients traits
         public bool CheckMatch(Gamer incGamer, Gamer excGamer)
         {
             bool match;

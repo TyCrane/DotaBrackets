@@ -30,7 +30,9 @@
                                     @Html.Raw(newsItem.contents)
                                 </li>
                                 <li>
-                                    <button class="readMore">Read More</button>
+                                    <a href="@Html.Raw(newsItem.url)">
+                                        <button class="readMore">Read More</button>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -95,28 +97,37 @@
 
             <div class="friendsContainer">
                 @{
-                    if (Model.gamer.friendsList.friendsList != null)
+                    <button id="refresh">Refresh</button>
+
+                    if (Model.gamer.friendsList.friendsList != null && Model.gamer.friendsList.friendsList.Count > 0)
                     {
                         DotaBrackets_WEB_2016.Models.FriendsList friendsList = new DotaBrackets_WEB_2016.Models.FriendsList();
                         friendsList = Model.gamer.friendsList;
 
                         <div class="friends">
-                            <ul>
+                            
+                            <p>
+                                Username
+                            </p>
+                            <p>
+                                Dota ID
+                            </p>
+                            <ul id="friendsUL">
                                 @{ foreach (DotaBrackets_WEB_2016.Models.FriendID friend in friendsList.friendsList)
                                     {
                                         <li>
-                                           UserName: @friend.userName
+                                           @friend.userName
                                         </li>
                                         <li>
-                                           SteamID: @friend.steamID
+                                           @friend.dota2ID
                                         </li>
                                     }
                                 }
                             </ul>
-                        </div>
-                                    }
-                                    else
-                                    {
+                        </div> 
+                    }
+                    else
+                    {
                         <div class="friends">
                             <ul>
                                 <li>
@@ -124,7 +135,7 @@
                                 </li>
                             </ul>
                         </div>
-                                    }
+                    }
                 }
             </div>
 
@@ -136,19 +147,9 @@
 
     <div class="rightCol" id="chatContainer">
 
-        <div>
-            <div style="visibility: hidden" id="groupName"></div>
-        </div>
-
-        <div>
-            Party Members:
-        </div>
-        <div id="partyMembers">
-            
-        </div>
 
         <ul class="rightColUL">
-            <li style="border: 1px solid cyan; border-bottom: none">
+            <li class="startSearchingLi">
                 Start Searching
             </li>
             <li>
@@ -156,12 +157,43 @@
                 <button id="btnStopSearching">Stop Searching</button>
             </li>
         </ul>
+
+        <div class="searchBoxDiv">
+            <ul class="searchBoxUL">
+                <li class="searchBoxHead">
+                    Party Members:
+                </li>
+                <li class="searchBoxSubHead" id="sbsh">
+                    UserName
+                </li>
+                <li class="searchBoxSubHead">
+                    Dota ID
+                </li>
+            </ul>
+
+            <div id="partyMembers"> </div>
+        </div>
+
+        <div class="FriendAdded">
+            Friend Added!
+        </div>
+        <div class="FriendExists">
+            You already have this friend!
+        </div>
+       
         <div class="chatRoom">
             <li id="name">@Model.gamer.userName</li>
             <div id="divChat"></div>
             <input type="text" id="msg" />
             <input type="button" id="btnSend" value="Send" />
         </div>
+        <div class="searchEnd">
+            <p>hidden</p>
+        </div>
+    </div>
+
+    <div>
+        <div style="visibility: hidden" id="groupName"></div>
     </div>
 
 </div>
@@ -171,7 +203,9 @@
 @section scripts
 {
 <script src="~/signalr/hubs"></script>
-    <script>
+    <script type="text/javascript">
+
+        var data;
 
         $(document).ready(function () {
             //displays and hides tabs in left column of page
@@ -200,7 +234,7 @@
             //connects the hub and the client
             var chatProxy = $.connection.signalRChatHub;
 
-            var data = @Html.Raw(Json.Encode(Model.gamer));
+            data = @Html.Raw(Json.Encode(Model.gamer));
             data = JSON.stringify(data);
 
             $.connection.hub.start().done(function () {
@@ -229,7 +263,7 @@
                     $("#msg").val('').focus();
                 });
             });
-            
+
             //recieves messages in group chat to the chatroom
             chatProxy.client.addChatMessage = function (msgFrom, msg) {
                 $("#divChat").append('<li><strong>' + msgFrom + '</strong>:&nbsp;&nbsp;' + msg + '</li>')
@@ -239,18 +273,49 @@
             chatProxy.client.addContosoChatMessageToPage = function (groupName) {
                 $("#groupName").append('<li>'+ groupName + '</li>')
             };
-
+       
             //adds matched party members to the page
             chatProxy.client.recievePartyMember = function (thisGroup) {
                 $('#partyMembers').empty();
                 thisGroup.members.forEach(function (member) {
-                    console.log(thisGroup);
-                    $("#partyMembers").append('<p>' + member.userName + '</p>' + '<p>' + member.steamID + '</p>');
+                    $("#partyMembers").append('<div><p>' + member.userName + '</p>' + '<p>' + member.dota2ID + '</p>'
+                        + "<input type='button' class='addFriendButton' id='"+member.dota2ID +"' onClick='return addToFriendsList(this)' friendName='"+member.userName+"' value='&#10004;' />");
                 })
-               
             };
         });
 
+        var friendsListReturned;
+        var friendsListObject;
+        //adds a friend to your friends list if you click add friend
+        function addToFriendsList(current) {
+            $.post('@Url.Action("addFriend", "Account")', {incData: data, dota2ID: current.id, friendUserName: current.attributes["friendName"].value }, function (returnData) {
+                friendsListObject = JSON.parse(returnData);
+                if(friendsListObject.userName != null)
+                {
+                    $("#friendsUL").append('<li>' + friendsListObject.userName +'</li><li>' +friendsListObject.dota2ID + '</li>');
+                    $(".FriendAdded").show();
+                    setTimeout(function() { $(".FriendAdded").hide(); }, 3000); 
+                }
+                else
+                {
+                    $(".FriendExists").show();
+                    setTimeout(function() { $(".FriendExists").hide(); }, 3000);
+                }
+            });            
+        };
+        //refreshes the friends page on refresh button click
+        $("#refresh").click( function () {
+            $.post('@Url.Action("refreshFriends", "Account")', { incData: data }, function (returnData) {
+                friendsListObject = JSON.parse(returnData);
+                if(friendsListObject != null)
+                {
+                    $('#friendsUL').empty();
+                }
+                friendsListObject.forEach( function (entry) {
+                    $("#friendsUL").append('<li>' + entry.userName +'</li><li>' +entry.dota2ID + '</li>');
+                });
+            });
+        });
     </script>    
 }
 

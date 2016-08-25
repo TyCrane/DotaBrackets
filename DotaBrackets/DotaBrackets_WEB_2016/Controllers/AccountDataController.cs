@@ -29,10 +29,10 @@ namespace DotaBrackets_WEB_2016.Controllers
             {
                 db = new SqlDatabase(WebConfigurationManager.ConnectionStrings["DotaBracketsConnectionString"].ToString());
             }
-        }        
+        }
 
-//hashes passwords
-public static string GetSwcSH1(string access)
+        //hashes passwords
+        public static string GetSwcSH1(string access)
         {
             SHA1 algorithm = SHA1.Create();
             byte[] data = algorithm.ComputeHash(Encoding.UTF8.GetBytes(access));
@@ -44,7 +44,7 @@ public static string GetSwcSH1(string access)
             return sh1;
         }
 
-//************************************************** Method to check if user exists **************************************************
+        //************************************************** Method to check if user exists **************************************************
 
         //returns model if does not exists, erases model if does exists
         public ViewModel CheckLogin(ViewModel viewModel)
@@ -152,7 +152,7 @@ public static string GetSwcSH1(string access)
             }
         }
 
-//******************************************* Methods to Login a User ***************************************************************
+        //******************************************* Methods to Login a User ***************************************************************
 
         //Logs in a new user: overload (ViewModel) (does not hash password)
         public ViewModel LoginNewUser(ViewModel viewModel)
@@ -199,7 +199,7 @@ public static string GetSwcSH1(string access)
                                                            {
                                                                friendID = dr.Field<int>("friendID"),
                                                                userName = dr.Field<string>("friendUserName"),
-                                                               steamID = dr.Field<long>("friendSteamID")
+                                                               dota2ID = dr.Field<long>("friendSteamID")
                                                            }).ToList();
                 //if db was unable to find person
                 if (viewModel.gamer.steamID == 0)
@@ -268,7 +268,7 @@ public static string GetSwcSH1(string access)
                                                            {
                                                                friendID = dr.Field<int>("friendID"),
                                                                userName = dr.Field<string>("friendUserName"),
-                                                               steamID = dr.Field<long>("friendSteamID")
+                                                               dota2ID = dr.Field<long>("friendSteamID")
                                                            }).ToList();
 
                 if (viewModel.gamer.steamID == 0)
@@ -288,9 +288,36 @@ public static string GetSwcSH1(string access)
             }
         }
 
-//*********************************************** Methods to update an exitsting user ***********************************************
-    //updates values in the database with the given viewModel
-    public ViewModel EditUser(ViewModel viewModel)
+        //gets the users friendsList
+        public FriendsList GetFriendsList(Gamer incGamer)
+        {
+            DbCommand dbCommand = db.GetStoredProcCommand("get_FriendsList");
+            db.AddInParameter(dbCommand, "gamerID", DbType.String, incGamer.gamerID);
+
+            DataSet ds = db.ExecuteDataSet(dbCommand);
+
+            var List = (from drRow in ds.Tables[0].AsEnumerable()
+                                  select new FriendID()
+                                  {
+                                      userName = drRow.Field<string>("userName"),
+                                      dota2ID = drRow.Field<Int64>("dota2ID")
+
+                                  }).ToList();
+
+            FriendsList friendsList = new FriendsList();
+
+            foreach (FriendID friends in List)
+            {
+                friendsList.friendsList.Add(friends);
+            }
+
+            return friendsList;
+
+        }
+
+        //*********************************************** Methods to update an exitsting user ***********************************************
+        //updates values in the database with the given viewModel
+        public ViewModel EditUser(ViewModel viewModel)
         {
             ViewModel blankModel = new ViewModel();
 
@@ -349,7 +376,35 @@ public static string GetSwcSH1(string access)
             {
                 return blankModel;
             }
-            
+
+        }
+
+        //adds friends to the user
+        public FriendID AddFriendList(FriendID friend)
+        {
+            int success = 0;
+
+            if (friend.userName != null)
+            {
+                DbCommand dbCommand = db.GetStoredProcCommand("upd_FriendsList");
+
+                db.AddInParameter(dbCommand, "friendID", DbType.Int32, friend.friendID);
+                db.AddInParameter(dbCommand, "dota2ID", DbType.Int64, friend.dota2ID);
+                db.AddInParameter(dbCommand, "userName", DbType.String, friend.userName);
+                db.AddOutParameter(dbCommand, "success", DbType.Int32, sizeof(int));
+                db.ExecuteScalar(dbCommand);
+                success = (int)db.GetParameterValue(dbCommand, "success");
+            }
+
+            if (success == 1)
+            {
+                return friend;
+            }
+            else
+            {
+                FriendID blankFriend = new FriendID();
+                return blankFriend;
+            }
         }
     }
 }

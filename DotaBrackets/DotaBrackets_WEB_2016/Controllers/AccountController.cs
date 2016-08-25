@@ -1,4 +1,5 @@
 ﻿using DotaBrackets_WEB_2016.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,16 @@ namespace DotaBrackets_WEB_2016.Controllers
 {
     public class AccountController : Controller
     {
-//********************************************** Methods to create a user ************************************************************
+        //********************************************** Methods to create a user ************************************************************
 
-    //creates a user and passes the model to the Login Method to display logged in screen
-    public ActionResult Create(FormCollection col)
+        //creates a user and passes the model to the Login Method to display logged in screen
+        public ActionResult Create(FormCollection col)
         {
             try
             {
                 ViewModel viewModel = new ViewModel();
 
-                
+
                 viewModel.gamer.userName = col["userName"];
                 viewModel.gamer.access = col["access"];
                 viewModel.gamer.traits.mmr = Convert.ToInt32(col["tmmr"]);
@@ -39,7 +40,7 @@ namespace DotaBrackets_WEB_2016.Controllers
 
                 AccountDataController dataController = new AccountDataController();
 
-                    
+
 
                 viewModel = dataController.CreateUser(viewModel);
 
@@ -56,7 +57,7 @@ namespace DotaBrackets_WEB_2016.Controllers
                     //already exits or input error
                     return View("Error");
                 }
-             }
+            }
             catch
             {
                 //improper data entry format
@@ -64,7 +65,7 @@ namespace DotaBrackets_WEB_2016.Controllers
             }
         }
 
-//********************************************** Methods to Login ********************************************************************
+        //********************************************** Methods to Login ********************************************************************
 
         //logs user in w/ form collection and returns view: overload (formcollection)
         public ActionResult LoginWithForm(FormCollection col)
@@ -74,6 +75,7 @@ namespace DotaBrackets_WEB_2016.Controllers
 
             viewModel.gamer.userName = col["userName"];
             viewModel.gamer.access = col["access"];
+
 
             //send the credentials to the database to check and see if they match
             AccountDataController dataController = new AccountDataController();
@@ -134,7 +136,26 @@ namespace DotaBrackets_WEB_2016.Controllers
             }
         }
 
-//**************************************************** Edit Account ******************************************************************
+        //gets a users friendslist
+        public string refreshFriends(string incData)
+        {
+            Gamer gamer = new Gamer();
+            FriendsList friends = new FriendsList();
+
+            gamer = JsonConvert.DeserializeObject<Gamer>(incData);
+
+            AccountDataController dataController = new AccountDataController();
+
+            friends = dataController.GetFriendsList(gamer);
+
+            FriendID[] friendArray = friends.friendsList.ToArray();
+
+            string friendJson = JsonConvert.SerializeObject(friendArray);
+
+            return friendJson;
+        }
+
+        //**************************************************** Edit Account ******************************************************************
         //returns edit account page
         public ActionResult EditAccount()
         {
@@ -169,7 +190,7 @@ namespace DotaBrackets_WEB_2016.Controllers
             viewModel.gamer.gamerID = steamUser.gamer.gamerID;
 
             viewModel = dataController.EditUser(viewModel);
-            
+
 
             //new user added, now login
             if (viewModel.gamer.userName != null)
@@ -192,7 +213,29 @@ namespace DotaBrackets_WEB_2016.Controllers
             }
         }
 
-//************************************************ Methods to Return the Loggedin Page ***********************************************
+        //add a friend to your friendsList
+        public string addFriend(string incData, string dota2ID, string friendUserName)
+        {
+            Gamer gamer = new Gamer();
+            FriendID friendToAdd = new FriendID();
+
+            gamer = JsonConvert.DeserializeObject<Gamer>(incData);
+            friendToAdd.friendID = gamer.gamerID;
+            friendToAdd.dota2ID = Convert.ToInt64(dota2ID);
+            friendToAdd.userName = friendUserName;
+
+            gamer.friendsList.friendsList.Add(friendToAdd);
+
+            AccountDataController dataController = new AccountDataController();
+
+            friendToAdd = dataController.AddFriendList(friendToAdd);
+
+            string friendJson = JsonConvert.SerializeObject(friendToAdd);
+
+            return friendJson;
+        }
+
+        //************************************************ Methods to Return the Loggedin Page ***********************************************
         //called when navigating between menus
         public ActionResult LoginNoParameter()
         {

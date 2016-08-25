@@ -26,6 +26,14 @@ namespace DotaBrackets_WEB_2016.Controllers
             return View(viewModel);
         }
 
+        //logs the user out and returns index page
+        public ActionResult LogOut()
+        {
+            Session["viewModel"] = null;
+
+            return RedirectToAction("Index");
+        }
+
 //************************************************* Methods to return Registration Page **********************************************
     //returns the Registration page and fills the dropdown Boxes
     public ActionResult Register()

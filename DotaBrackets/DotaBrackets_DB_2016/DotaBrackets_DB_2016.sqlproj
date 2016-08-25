@@ -80,5 +80,7 @@
     <Build Include="StoredProcs\upd_Traits.sql" />
     <Build Include="StoredProcs\upd_Preferences.sql" />
     <Build Include="StoredProcs\upd_Gamer.sql" />
+    <Build Include="StoredProcs\upd_FriendsList.sql" />
+    <Build Include="StoredProcs\get_FriendsList.sql" />
   </ItemGroup>
 </Project>

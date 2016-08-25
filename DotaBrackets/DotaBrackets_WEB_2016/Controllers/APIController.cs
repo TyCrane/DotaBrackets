@@ -121,11 +121,18 @@ namespace DotaBrackets_WEB_2016.Controllers
 
             url = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/V001/?key=" + apiKey + "&matches_requested=1&account_id=" + viewModel.gamer.dota2ID;
 
-            using (WebClient wc = new WebClient())
+            try
             {
-                jsonResult = wc.DownloadString(url);
+                using (WebClient wc = new WebClient())
+                {
+                    jsonResult = wc.DownloadString(url);
 
-                viewModel.dotaUser = JsonConvert.DeserializeObject<RootObject3>(jsonResult);
+                    viewModel.dotaUser = JsonConvert.DeserializeObject<RootObject3>(jsonResult);
+                }
+            }
+            catch
+            {
+                return viewModel;
             }
 
             if (viewModel.dotaUser.result.matches != null)

@@ -23,6 +23,7 @@ namespace DotaBrackets_WEB_2016.Models
         public int dota2ID { get; set; }
         public bool isSearching { get; set; }
         public string avatar { get; set; }
+        public string connectionID { get; set; }
         public FriendsList friendsList { get; set; }
         public Preferences preferences { get; set; }
         public Traits traits { get; set; }
