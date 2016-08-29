@@ -18,23 +18,6 @@ AS
 	BEGIN
 		BEGIN TRY
 
-			IF EXISTS (SELECT * FROM Preferences WHERE 
-							mmr = ISNULL(@pmmr, 1)
-						AND hasMic = ISNULL(@phasMic, 1)
-						AND lang = ISNULL(@plang, 1)
-						)
-
-				BEGIN
-					SET @preferencesID = (
-							SELECT preferencesID FROM Preferences
-			
-							WHERE	mmr = ISNULL(@pmmr, 1)
-								AND hasMic = ISNULL(@phasMic, 1)
-								AND lang = ISNULL(@plang, 1)
-									)
-					RETURN @preferencesID
-				END
-			ELSE
 				BEGIN
 					INSERT Preferences (mmr, 
 									hasMic, 
@@ -47,7 +30,7 @@ AS
 							)
 
 					SET @preferencesID = (
-							SELECT preferencesID FROM Preferences
+							SELECT TOP (1) preferencesID FROM Preferences
 			
 							WHERE	mmr = ISNULL(@pmmr, 1)
 								AND hasMic = ISNULL(@phasMic, 1)
@@ -67,8 +50,7 @@ AS
 					@errorMessage = ERROR_MESSAGE(),
 					@errorProcedure = ERROR_PROCEDURE()
 			
-			RETURN 0
 			EXECUTE dbo.log_ErrorTimeStamp @timeStamp, @errorMessage, @errorProcedure
-
+			RETURN 0
 		END CATCH
 	END

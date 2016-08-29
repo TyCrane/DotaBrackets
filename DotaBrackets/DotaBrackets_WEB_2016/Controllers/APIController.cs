@@ -135,7 +135,7 @@ namespace DotaBrackets_WEB_2016.Controllers
                 return viewModel;
             }
 
-            if (viewModel.dotaUser.result.matches != null)
+            if (viewModel.dotaUser.result.matches.Count > 0)
             {
 
                 viewModel.gamer.dotaMatch = viewModel.dotaUser.result.matches[0];

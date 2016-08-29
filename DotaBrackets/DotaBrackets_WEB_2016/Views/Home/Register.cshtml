@@ -13,19 +13,19 @@
             <li style="color:cyan; font-size: 1.4em; text-align: center; border-left: none">
                 Register
             </li>
-@using (Html.BeginForm("Create", "Account", FormMethod.Post, new { id = "form1" }))
-{
+    @using (Html.BeginForm("Create", "Account", FormMethod.Post, new { id = "form1" }))
+    {
             <li>
                 <label style="float: left; width: 12%; color: white">Username:</label>
-                @Html.TextBox("userName", "", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
+                @Html.TextBox("userName", "", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal", required = "required" })
             </li>
             <li>
                 <label style="float: left; width: 12%; color: white">Password:</label>
-                @Html.Password("access", "", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
+                @Html.Password("access", "", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal", required = "required" })
             </li>
             <li>
                 <label style="float: left; width: 12%; color: white">SteamID:</label>
-                @Html.TextBox("steamID", "", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal" })
+                @Html.TextBox("steamID", "", new { Style = "width: 52 %; background-color: #b5f7f3; border: 1px solid teal", required = "required" })
                 
                 <span class="moreInfo">                 
                     ? 
@@ -40,25 +40,25 @@
             <li>
                 <label>What skill level are you?:</label>
                 <p>
-                    @Html.DropDownList("tmmr", (SelectList)ViewBag.mmr, "--Select--")
+                    @Html.DropDownList("tmmr", (SelectList)ViewBag.mmr, "--Select--", new { required = "required" })
                 </p>
             </li>
             <li>
                 <label>Which language do you speak?</label>
                 <p>
-                    @Html.DropDownList("tlang", (SelectList)ViewBag.lang, "--Select--")
+                    @Html.DropDownList("tlang", (SelectList)ViewBag.lang, "--Select--", new { required = "required" })
                 </p>
             </li>
             <li>
                 <label>Do you have a mic?:</label>
                 <p>
-                    @Html.DropDownList("thasMic", (SelectList)ViewBag.hasMic, "--Select--")
+                    @Html.DropDownList("thasMic", (SelectList)ViewBag.hasMic, "--Select--", new { required = "required" })
                 </p>
             </li>
             <li>
                 <label>Which Server do you prefer?:</label>
                 <p>
-                    @Html.DropDownList("tserv", (SelectList)ViewBag.serv, "--Select--")
+                    @Html.DropDownList("tserv", (SelectList)ViewBag.serv, "--Select--", new { required = "required" })
                 </p>
             </li>
             <li style="color:cyan; font-size: 1.4em; text-align: center;">
@@ -67,19 +67,19 @@
             <li>
                 <label>What skill level should your teammates be?:</label>
                 <p>
-                    @Html.DropDownList("pmmr", (SelectList)ViewBag.mmr, "--Select--")
+                    @Html.DropDownList("pmmr", (SelectList)ViewBag.mmr, "--Select--", new { required = "required" })
                 </p>
             </li>
             <li>
                 <label>Should your teammates have a mic?:</label>
                 <p>
-                    @Html.DropDownList("phasMic", (SelectList)ViewBag.hasMic, "--Select--")
+                    @Html.DropDownList("phasMic", (SelectList)ViewBag.hasMic, "--Select--", new { required = "required" })
                 </p>
             </li>
             <li>
                 <label>What language do your teammates speak?</label>
                 <p>
-                    @Html.DropDownList("plang", (SelectList)ViewBag.lang, "--Select--")
+                    @Html.DropDownList("plang", (SelectList)ViewBag.lang, "--Select--", new { required = "required" })
                 </p>
             </li>
             <li style="text-align: center">

@@ -52,9 +52,9 @@ AS
 					@errorMessage = ERROR_MESSAGE(),
 					@errorProcedure = ERROR_PROCEDURE()
 			
-			RETURN 0
+		
 			EXECUTE dbo.log_ErrorTimeStamp @timeStamp, @errorMessage, @errorProcedure
-
+			RETURN 0
 		END CATCH
 	END
 

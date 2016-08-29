@@ -19,25 +19,6 @@ AS
 	BEGIN
 		BEGIN TRY
 
-			IF EXISTS (SELECT * FROM Traits WHERE 
-							mmr = ISNULL(@tmmr, 1)
-						AND hasMic = ISNULL(@thasMic, 1)
-						AND lang = ISNULL(@tlang, 1)
-						AND serv = ISNULL(@tserv, 1)
-						)
-
-				BEGIN
-					SET @traitsID = (
-							SELECT traitsID FROM Traits
-			
-							WHERE	mmr = ISNULL(@tmmr, 1)
-								AND hasMic = ISNULL(@thasMic, 1)
-								AND lang = ISNULL(@tlang, 1)
-								AND serv = ISNULL(@tserv, 1)
-									)
-					RETURN @traitsID
-				END
-			ELSE
 				BEGIN
 					INSERT Traits (mmr, 
 									hasMic, 
@@ -52,7 +33,7 @@ AS
 							)
 
 					SET @traitsID = (
-							SELECT traitsID FROM Traits
+							SELECT TOP (1) traitsID FROM Traits
 			
 							WHERE	mmr = ISNULL(@tmmr, 1)
 								AND hasMic = ISNULL(@thasMic, 1)
@@ -73,8 +54,8 @@ AS
 					@errorMessage = ERROR_MESSAGE(),
 					@errorProcedure = ERROR_PROCEDURE()
 			
-			RETURN 0
+		
 			EXECUTE dbo.log_ErrorTimeStamp @timeStamp, @errorMessage, @errorProcedure
-
+			RETURN 0
 		END CATCH
 	END
