@@ -52,38 +52,57 @@
 
             <div class="matchContainer">
                 @{
-                    if (Model.gamer.dotaMatch != null)
+                    if (Model.matchDetails.result.players.Count > 0 != null && Model.gamer.matchPlayer.account_id != 0)
                     {
-                        DotaBrackets_WEB_2016.Models.Match match = new DotaBrackets_WEB_2016.Models.Match();
-                        match = Model.gamer.dotaMatch;
+                        DotaBrackets_WEB_2016.Models.RootObject4 match = new DotaBrackets_WEB_2016.Models.RootObject4();
+                        DotaBrackets_WEB_2016.Models.MatchPlayer player = new DotaBrackets_WEB_2016.Models.MatchPlayer();
+                        match = Model.matchDetails;
+                        player = Model.gamer.matchPlayer;
+                        TimeSpan time = TimeSpan.FromSeconds( Convert.ToDouble(match.result.duration));
+                        string duration = time.ToString(@"hh\:mm\:ss");
 
                         <div class="match">
                             <ul>
-                                <li>
-                                   Lobby Type: @match.lobby_type
+         
+                                <li class="statsHeader">
+                                   Match ID: <span style="padding-right: 1%; color: white">@match.result.match_id</span> Time: <span style="color: white">@duration</span>
+</li>
+                                <li class="statsTitle">
+                                    Kill/Death/Assists:
                                 </li>
-                                <li>
-                                   Match ID: @match.match_id
+                                <li class="stats">
+                                    @player.kills/@player.deaths/@player.assists
                                 </li>
-                                <li>
-                                   Players: 
-                                    @{ 
-                                        foreach (DotaBrackets_WEB_2016.Models.DotaPlayer player in match.dotaPlayers)
-                                        {
-                                            <li>
-                                                Account ID: @player.account_id
-                                            </li>
-                                            <li>
-                                                Hero: @player.hero_id
-                                            </li>
-                                        }
-                                     }
+                                <li class="statsTitle">
+                                    Last Hits/Denies
                                 </li>
+                                <li class="stats">
+                                    @player.last_hits/@player.denies
+                                </li>
+                                <li class="statsTitle">
+                                    Gold Per Minute - Experience
+                                </li>
+                                <li class="stats">
+                                    @player.gold_per_min - @player.xp_per_min
+                                </li>
+                                <li class="statsTitle">
+                                    Level and Net Worth
+                                </li>
+                                <li class="stats">
+                                    @player.level - @player.gold
+                                </li>
+                                <li class="statsTitle">
+                                    Hero Damage - Building Damage - Hero Healing
+                                </li>
+                                <li class="stats">
+                                    @player.hero_damage - @player.tower_damage - @player.hero_healing
+                                </li>
+
                             </ul>
                         </div>
-                                        }
-                                        else
-                                        {
+                    }
+                    else
+                    {
                         <div class="match">
                             <ul>
                                 <li>
@@ -121,6 +140,7 @@
                                         <li>
                                            @friend.dota2ID
                                         </li>
+                                        <button onClick="return DeleteFriend(this)" class="deleteFriend" id="@friend.dota2ID">Delete</button>
                                     }
                                 }
                             </ul>
@@ -151,6 +171,8 @@
         <ul class="rightColUL">
             <li class="startSearchingLi">
                 Start Searching
+            </li>
+            <li class="loading">
             </li>
             <li>
                 <button id="btnSearch">Search</button>
@@ -245,6 +267,8 @@
                     $.post('@Url.Action("StartSearching", "SignalRGroups")', { incData: data }, function (returnData) {
                         data = returnData;
                     });
+                    $(".startSearchingLi").empty().append('<li>' + "Searching" + "</li>");
+                    $(".loading").show();
                 });
 
                 //stops search and removes client from group. Calls controller to change 'isSearching' to false
@@ -255,6 +279,8 @@
                     });
                     $("#partyMembers").html('');
                     $("#groupName").html('');
+                    $(".loading").hide();
+                    $(".startSearchingLi").empty().append('<li>' + "Start Searching" + "</li>");
                 });
 
                 //button to send a message to the chatroom
@@ -292,7 +318,7 @@
                 friendsListObject = JSON.parse(returnData);
                 if(friendsListObject.userName != null)
                 {
-                    $("#friendsUL").append('<li>' + friendsListObject.userName +'</li><li>' +friendsListObject.dota2ID + '</li>');
+                    $("#friendsUL").append('<li>' + friendsListObject.userName +'</li><li>' +friendsListObject.dota2ID + '</li><button onClick="return DeleteFriend(this)" class="deleteFriend" id="'+friendsListObject.dota2ID+'">Delete</button>');
                     $(".FriendAdded").show();
                     setTimeout(function() { $(".FriendAdded").hide(); }, 3000); 
                 }
@@ -303,6 +329,20 @@
                 }
             });            
         };
+        //deletes a friend 
+        function DeleteFriend(current)
+        {
+            $.post('@Url.Action("deleteFriend", "Account")', {incData: data, dota2ID: current.id}, function(returnData) {
+                friendsListObject = JSON.parse(returnData);
+                if(friendsListObject != null)
+                {
+                    $('#friendsUL').empty();
+                }
+                friendsListObject.forEach( function (entry) {
+                    $("#friendsUL").append('<li>' + entry.userName +'</li><li>' +entry.dota2ID + '</li>');
+                });
+            });
+        };
         //refreshes the friends page on refresh button click
         $("#refresh").click( function () {
             $.post('@Url.Action("refreshFriends", "Account")', { incData: data }, function (returnData) {
@@ -312,7 +352,7 @@
                     $('#friendsUL').empty();
                 }
                 friendsListObject.forEach( function (entry) {
-                    $("#friendsUL").append('<li>' + entry.userName +'</li><li>' +entry.dota2ID + '</li>');
+                    $("#friendsUL").append('<li>' + entry.userName +'</li><li>' +entry.dota2ID + '</li><button onClick="return DeleteFriend(this)" class="deleteFriend" id="'+entry.dota2ID+'">Delete</button>');
                 });
             });
         });

@@ -12,7 +12,8 @@ namespace DotaBrackets_WEB_2016.Models
             this.friendsList = new FriendsList();
             this.preferences = new Preferences();
             this.traits = new Traits();
-            this.dotaMatch = new Match(); 
+            this.dotaMatch = new Match();
+            this.matchPlayer = new MatchPlayer();
         }
         public int gamerID { get; set; }
         public int traitsID { get; set; }
@@ -29,5 +30,6 @@ namespace DotaBrackets_WEB_2016.Models
         public Traits traits { get; set; }
         public Match dotaMatch { get; set; }
         public string connectedGroup { get; set; }
+        public MatchPlayer matchPlayer { get; set; }
     }
 }

@@ -33,6 +33,20 @@ namespace DotaBrackets_WEB_2016.Controllers
 
             return RedirectToAction("Index");
         }
+    /********************************************* Returns the About Page **********************************************/
+    //gets data from database to display in the about page
+    public ActionResult About()
+        {
+
+            AccountDataController dataController = new AccountDataController();
+            Statistics stats = new Statistics();
+
+            stats = dataController.GetStats();
+
+            ViewBag.stats = stats;
+
+            return View();
+        }
 
 //************************************************* Methods to return Registration Page **********************************************
     //returns the Registration page and fills the dropdown Boxes

@@ -66,21 +66,23 @@
     <None Include="Schema\init_TypeTables.sql" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="StoredProcs\get_Login.sql" />
-    <Build Include="StoredProcs\ins_Traits.sql" />
-    <Build Include="StoredProcs\log_ErrorTimeStamp.sql" />
-    <Build Include="StoredProcs\ins_Preferences.sql" />
-    <Build Include="StoredProcs\ins_Gamer.sql" />
-    <Build Include="StoredProcs\ins_FriendsList.sql" />
-    <Build Include="StoredProcs\get_AllMmrType.sql" />
-    <Build Include="StoredProcs\get_AllHasMicType.sql" />
-    <Build Include="StoredProcs\get_AllLangType.sql" />
-    <Build Include="StoredProcs\get_AllServType.sql" />
-    <Build Include="StoredProcs\get_LoginCheck.sql" />
-    <Build Include="StoredProcs\upd_Traits.sql" />
-    <Build Include="StoredProcs\upd_Preferences.sql" />
-    <Build Include="StoredProcs\upd_Gamer.sql" />
-    <Build Include="StoredProcs\upd_FriendsList.sql" />
-    <Build Include="StoredProcs\get_FriendsList.sql" />
+    <None Include="StoredProcs\get_Login.sql" />
+    <None Include="StoredProcs\ins_Traits.sql" />
+    <None Include="StoredProcs\log_ErrorTimeStamp.sql" />
+    <None Include="StoredProcs\ins_Preferences.sql" />
+    <None Include="StoredProcs\ins_Gamer.sql" />
+    <None Include="StoredProcs\ins_FriendsList.sql" />
+    <None Include="StoredProcs\get_AllMmrType.sql" />
+    <None Include="StoredProcs\get_AllHasMicType.sql" />
+    <None Include="StoredProcs\get_AllLangType.sql" />
+    <None Include="StoredProcs\get_AllServType.sql" />
+    <None Include="StoredProcs\get_LoginCheck.sql" />
+    <None Include="StoredProcs\upd_Traits.sql" />
+    <None Include="StoredProcs\upd_Preferences.sql" />
+    <None Include="StoredProcs\upd_Gamer.sql" />
+    <None Include="StoredProcs\upd_FriendsList.sql" />
+    <None Include="StoredProcs\get_FriendsList.sql" />
+    <None Include="StoredProcs\del_Friend.sql" />
+    <None Include="StoredProcs\get_Stats.sql" />
   </ItemGroup>
 </Project>

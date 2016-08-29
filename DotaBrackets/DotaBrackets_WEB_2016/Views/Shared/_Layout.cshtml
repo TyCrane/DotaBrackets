@@ -32,6 +32,9 @@
                 <li class="menuButton">
                     <input type="button" value="Home" onclick="location.href='@Url.Action("LoginNoParameter", "Account")'" />
                 </li>
+                <li class="menuButton">
+                    <input type="button" value="About" onclick="location.href='@Url.Action("About", "Home")'" />
+                </li>
 
 
                 @{ if (myModel.gamer.avatar != null)
@@ -47,10 +50,8 @@
         </div>
  
 
-
         @RenderBody()
     </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jquery.signalR")
     @Scripts.Render("~/bundles/bootstrap")

@@ -234,7 +234,9 @@
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MatchDetails.cs" />
     <Compile Include="Models\Preferences.cs" />
+    <Compile Include="Models\Statistics.cs" />
     <Compile Include="Models\steamNews.cs" />
     <Compile Include="Models\SteamUser.cs" />
     <Compile Include="Models\Traits.cs" />
@@ -291,6 +293,7 @@
     <Content Include="Views\Account\EditAccount.cshtml" />
     <Content Include="Views\Account\UpdateSuccesful.cshtml" />
     <Content Include="Views\Shared\SearchingPartial.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

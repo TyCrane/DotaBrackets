@@ -51,6 +51,10 @@ table {
 
 /*End Reset*/
 
+body {
+    background-color: rgb(18, 23, 33)
+}
+
 .body {
     background-image: url(DotaBracketsIndexBackgroundImage.png);
     background-color: black;
@@ -59,6 +63,7 @@ table {
     background-repeat: no-repeat;
     overflow: hidden;
 }
+
 
 /******************************************** Header *********************************************************/
 .headerUL {
@@ -226,6 +231,32 @@ table {
     line-height: 1.5em;
 }
 
+#refresh {
+    float: right;
+    background-color: rgba(0, 102, 128, .3);
+    color: cyan;
+    border: none;
+    margin-right: 5%;
+    margin-top: 5%;
+}
+
+#refresh:hover {
+    background-color: teal;
+}
+
+.deleteFriend {
+    float: left;
+    width: 12%;
+    background-color: rgba(0, 102, 128, .3);
+    color: white;
+    border: none;
+    border-top: 1px solid teal;
+}
+
+.deleteFriend:hover {
+    background-color: teal;
+}
+
 .friends {
     overflow: auto;
     padding: 5%;
@@ -242,7 +273,7 @@ table {
 .friends li {
     background-color: rgba(0, 102, 128, .3);
     float: left;
-    width: 50%;
+    width: 44%;
     padding-bottom: 3%;
     border-top: 1px solid teal;
 }
@@ -259,6 +290,32 @@ table {
     line-height: 1.5em;
 }
 
+.statsHeader {
+    font-size: 1.5em;
+    color: cyan;
+    display: block;
+    margin-right: 10%;
+    border-bottom: 1px ridge red;
+    padding-bottom: 1.5%;
+    margin-bottom: 2%;
+}
+
+.statsTitle {
+    background-color: transparent;
+    color: rgba(0,255,250, .9);
+    display: inline-block;
+}
+
+.stats {
+    background-color: rgba(0, 102, 128, .3);
+    border-top: 1px solid teal;
+    display: block;
+    clear: both;
+    padding-left: .5%;
+    margin-right: 10%;
+    line-height: 1.5em;
+}
+
 .newsContent {
     width: 90%;
     color: white;
@@ -270,7 +327,8 @@ table {
     text-align: center;
     padding-top: 1%;
     padding-bottom: 4%;
-    
+    max-width: 100%;
+    margin-right: 8%;
 }
 
 .rightCol {
@@ -287,7 +345,62 @@ table {
 
 .rightCol li {
 }
+/************************************************* Statistics Page ****************************************/
+.Statistics ul {
+    margin-top: 5%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
 
+.Statistics li {
+    color: cyan;
+    clear: both;
+}
+
+.StatsH1 {
+    background-color: rgba(55, 94, 148, .1);
+    border-top: 1px solid teal;
+    padding: 3%;
+}
+
+.StatsH1 span {
+    display: inline-block;
+    padding-bottom: 1%;
+    color: white;
+}
+
+.StatsLi {
+   background-color: transparent;
+   padding: 2%;
+   padding-bottom: 3.5%;
+   padding-top: 3.5%;
+}
+/************************************************Graph*************************************************/
+.GraphLeftCol {
+    display: inline-block;
+    width: 20%;
+    background-color: rgba(55, 94, 148, .1);
+    padding: 2%;
+}
+
+.GraphLeftCol span {
+    color: white;
+}
+
+.GraphRightCol {
+    display: inline-block;
+    width: 70%;
+    background-color: rgba(55, 94, 148, .1);
+
+}
+
+.GraphRightCol span {
+    display: inline-block;
+    width: 50%;
+    background-color: teal;
+    text-align: center;
+    padding: 2%;
+}
 
 /*********************************************** Registration Page ********************************************/
 .regHead {
@@ -353,7 +466,8 @@ a {
 }
 
 .chatRoom {
-    background-color:  #283b52;
+    /*background-color:  #283b52;*/
+    background-color: rgba(40, 59, 82, .75);
     text-align: left;
     border: 1px solid teal;
     border-top: 1px solid cyan;
@@ -374,7 +488,9 @@ a {
 }
 
 #chatContainer {
-    background-color: transparent;
+    /*background-color: transparent;*/
+    background-color: rgba(255,255,255, .05);
+    position: relative;
     border-right: none;
 }
 
@@ -452,11 +568,59 @@ a {
     border: 1px solid cyan;
     border-bottom: none;
     font-size: 1.3em;
-    padding-top: 1%;
+    padding-top: 2%;
+}
+
+.loading {
+  /*position: relative;
+  left: 90%;*/
+  position: absolute;
+  top: 7.5%;
+  right: 16%;
+  border: 1px solid cyan;
+  border-left-color: rgba(255, 255, 255, 0.4);
+  -webkit-border-radius: 999px;
+  -moz-border-radius: 999px;
+  border-radius: 999px;
+  display: none;
+}
+
+.loading {
+  margin: -25px 0 0 -25px;
+  height: 20px;
+  width: 20px;
+  -webkit-animation: animation-rotate 1000ms linear infinite;
+  -moz-animation: animation-rotate 1000ms linear infinite;
+  -o-animation: animation-rotate 1000ms linear infinite;
+  animation: animation-rotate 1000ms linear infinite;
+}
+
+@-webkit-keyframes animation-rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes animation-rotate {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-o-keyframes animation-rotate {
+  100% {
+    -o-transform: rotate(360deg);
+  }
+}
+
+@keyframes animation-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .searchEnd {
-    margin-top: 30%;
+    margin-top: 10%;
 }
 
 .searchEnd p {

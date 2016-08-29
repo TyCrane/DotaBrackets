@@ -1,0 +1,166 @@
+﻿
+
+<div class="bodyDark">
+    <div class="regHead">
+        <h1>
+            Site Statistics
+        </h1>
+    </div>
+
+    <div class="Statistics">
+        <ul>
+            <li class="StatsH1">
+                <span>
+                    Number of Users: @ViewBag.stats.visitors
+                </span>
+            </li>
+
+            <li class="GraphLeftCol">
+                <span>
+                     Identify as normal Mmr
+                </span>
+             </li>
+            <li class="GraphRightCol">
+                <span>
+                    @ViewBag.stats.mmrLow.ToString("p")
+                </span>
+            </li>
+            <li class="GraphLeftCol">
+                <span>
+                     Identify as High Mmr
+                </span>
+            </li>
+            <li class="GraphRightCol">
+                <span>
+                    @ViewBag.stats.mmrMed.ToString("p")
+                </span>
+            </li>
+            <li class="GraphLeftCol">
+                <span>
+                     Identify as Very High Mmr
+                </span>
+            </li>
+            <li class="GraphRightCol">
+                <span>
+                    @ViewBag.stats.mmrHigh.ToString("p")
+                </span>
+            </li>
+
+
+            <li class="GraphLeftCol">
+                <span>
+                     Prefer to match with low Mmr
+                </span>
+            </li>
+            <li class="GraphRightCol">
+                <span>
+                    @ViewBag.stats.prefMmrLow.ToString("p")
+                </span>
+            </li>
+            <li class="GraphLeftCol">
+                <span>
+                     Prefer to match with High Mmr
+                </span>
+            </li>
+            <li class="GraphRightCol">
+                <span>
+                    @ViewBag.stats.prefMmrMed.ToString("p")
+                </span>
+            </li>
+            <li class="GraphLeftCol">
+                <span>
+                     Prefer to match with Very High Mmr
+                </span>
+            </li>
+            <li class="GraphRightCol">
+                <span>
+                    @ViewBag.stats.prefMmrHigh.ToString("p")
+                </span>
+            </li>
+
+
+            <li class="GraphLeftCol">
+                <span>
+                     Have a microphone
+                </span>
+            </li>
+            <li class="GraphRightCol">
+                <span>
+                    @ViewBag.stats.hasMic.ToString("p")
+                </span>
+            </li>
+
+
+            <li class="GraphLeftCol">
+                <span>
+                     Prefer to match with teammates who have a microphone
+                </span>
+            </li>
+            <li class="GraphRightCol">
+                <span>
+                    @ViewBag.stats.preferMic.ToString("p")
+                </span>
+            </li>
+            <li class="GraphLeftCol">
+                <span>
+                     Have no preference on teammates having a microphone
+                </span>
+            </li>
+            <li class="GraphRightCol">
+                <span>
+                    @ViewBag.stats.preferHasMicNA.ToString("p")
+                </span>
+            </li>
+
+
+            <li class="GraphLeftCol">
+                <span>
+                     Speak english
+                </span>
+            </li>
+            <li class="GraphRightCol">
+                <span>
+                    @ViewBag.stats.speakEnglish.ToString("p")
+                </span>
+            </li>
+            <li class="GraphLeftCol">
+                <span>
+                     Prefer teammates to speak english
+                </span>
+            </li>
+            <li class="GraphRightCol">
+                <span>
+                    @ViewBag.stats.preferEnglish.ToString("p")
+                </span>
+            </li>
+            <li class="GraphLeftCol" style="margin-bottom: 8%;">
+                <span>
+                     Have no preference on which language their teammates speak
+                </span>
+            </li>
+            <li class="GraphRightCol">
+                <span>
+                    @ViewBag.stats.langNoPref.ToString("p")
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script>
+
+        $(document).ready(function () {
+
+            $(".GraphRightCol").children().each(function (span) {
+                //alert($(this).text());
+                var str = $(this).text()
+                str = str.replace(/\s/g, '');
+                $(this).css('width', str);
+            });
+        });
+
+    </script>
+}

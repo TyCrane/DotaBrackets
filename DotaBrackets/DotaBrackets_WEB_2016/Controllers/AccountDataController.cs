@@ -45,7 +45,6 @@ namespace DotaBrackets_WEB_2016.Controllers
         }
 
         //************************************************** Method to check if user exists **************************************************
-
         //returns model if does not exists, erases model if does exists
         public ViewModel CheckLogin(ViewModel viewModel)
         {
@@ -405,6 +404,174 @@ namespace DotaBrackets_WEB_2016.Controllers
                 FriendID blankFriend = new FriendID();
                 return blankFriend;
             }
+        }
+        /****************************************** Methods to delete *******************************************/
+        //deletes a users friend
+        public void DeleteFriend(FriendID friend)
+        {
+            if (friend.dota2ID != 0)
+            {
+                try
+                {
+                    DbCommand dbCommand = db.GetStoredProcCommand("del_Friend");
+
+                    db.AddInParameter(dbCommand, "gamerID", DbType.Int32, friend.friendID);
+                    db.AddInParameter(dbCommand, "dota2ID", DbType.Int64, friend.dota2ID);
+                    db.ExecuteNonQuery(dbCommand);
+                }
+                catch
+                {
+                    return;
+                }
+            }
+        }
+    /******************************************** Returns stats for About Page ***************************************/
+    //gets the stats from the database
+    public Statistics GetStats()
+        {
+            Statistics stats = new Statistics();
+            StatsLogic statsLogic = new StatsLogic();
+
+            DbCommand dbCommand = db.GetStoredProcCommand("get_Stats");
+
+            DataSet ds = db.ExecuteDataSet(dbCommand);
+
+            foreach (DataRow row in ds.Tables[0].AsEnumerable())
+            {
+                stats.allMmr += 1;
+
+                switch (row.Field<int>("mmr"))
+                {
+                    case 1: 
+                        statsLogic.mmr1 += 1;
+                        break;
+                    case 2:
+                        statsLogic.mmr2 += 1;
+                        break;
+                    case 3:
+                        statsLogic.mmr3 += 1;
+                        break;
+                    case 4:
+                        statsLogic.mmr4 += 1;
+                        break;
+                }  
+            }
+
+            stats.mmrLow = (statsLogic.mmr2 / stats.allMmr);
+            stats.mmrMed = (statsLogic.mmr3 / stats.allMmr);
+            stats.mmrHigh = (statsLogic.mmr4 / stats.allMmr);
+           
+            foreach (DataRow row in ds.Tables[1].AsEnumerable())
+            {
+                stats.allMmr += 1;
+
+                switch (row.Field<int>("mmr"))
+                {
+                    case 1:
+                        statsLogic.mmr1 += 1;
+                        break;
+                    case 2:
+                        statsLogic.mmr2 += 1;
+                        break;
+                    case 3:
+                        statsLogic.mmr3 += 1;
+                        break;
+                    case 4:
+                        statsLogic.mmr4 += 1;
+                        break;
+                }
+            }
+
+            stats.prefMmrLow = (statsLogic.mmr2 / stats.allMmr);
+            stats.prefMmrMed = (statsLogic.mmr3 / stats.allMmr);
+            stats.prefMmrHigh = (statsLogic.mmr4 / stats.allMmr);
+
+            foreach (DataRow row in ds.Tables[2].AsEnumerable())
+            {
+                stats.allMic += 1;
+
+                switch (row.Field<int>("hasMic"))
+                {
+                    case 1:
+                        statsLogic.hasMicNA += 1;
+                        break;
+                    case 2:
+                        statsLogic.hasMicYes += 1;
+                        break;
+                    case 3:
+                        statsLogic.hasMicNo += 1;
+                        break;
+                }
+
+                stats.hasMicNA = (statsLogic.hasMicNA / stats.allMic);
+                stats.hasMic = (statsLogic.hasMicYes / stats.allMic);
+                stats.hasMicNo = (statsLogic.hasMicNo / stats.allMic);
+
+            }
+
+            foreach (DataRow row in ds.Tables[3].AsEnumerable())
+            {
+                stats.allMic += 1;
+
+                switch (row.Field<int>("hasMic"))
+                {
+                    case 1:
+                        statsLogic.hasMicNA += 1;
+                        break;
+                    case 2:
+                        statsLogic.hasMicYes += 1;
+                        break;
+                    case 3:
+                        statsLogic.hasMicNo += 1;
+                        break;
+                }
+
+                stats.preferMic = (statsLogic.hasMicYes / stats.allMic);
+                stats.preferHasMicNA = (statsLogic.hasMicNA / stats.allMic);
+            }
+
+            foreach (DataRow row in ds.Tables[4].AsEnumerable())
+            {
+                stats.allLang += 1;
+
+                switch (row.Field<int>("lang"))
+                {
+                    case 1:
+                        statsLogic.langNoPref += 1;
+                        break;
+                    case 2:
+                        statsLogic.langEnglish += 1;
+                        break;
+                }
+
+                stats.speakEnglish = (statsLogic.langEnglish / stats.allLang);
+            }
+
+            foreach (DataRow row in ds.Tables[5].AsEnumerable())
+            {
+                stats.allLang += 1;
+
+                switch (row.Field<int>("lang"))
+                {
+                    case 1:
+                        statsLogic.langEnglish += 1;
+                        break;
+                    case 2:
+                        statsLogic.langNoPref += 1;
+                        break;
+                }
+
+                stats.preferEnglish = (statsLogic.langEnglish / stats.allLang);
+                stats.langNoPref = (statsLogic.langNoPref / stats.allLang);
+            }
+
+            foreach (DataRow row in ds.Tables[6].AsEnumerable())
+            {
+                stats.visitors += 1;
+            }
+
+
+            return stats;
         }
     }
 }

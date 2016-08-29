@@ -271,5 +271,26 @@ namespace DotaBrackets_WEB_2016.Controllers
                 return View("Error");
             }
         }
+        /*********************************************** Methods to delete ****************************************/
+        //deletes a friend from a users friend list
+        public string deleteFriend(string incData, string dota2ID)
+        {
+            Gamer gamer = new Gamer();
+            FriendID friendToDelete = new FriendID();
+
+            gamer = JsonConvert.DeserializeObject<Gamer>(incData);
+
+            friendToDelete.dota2ID = Convert.ToInt64(dota2ID);
+            friendToDelete.friendID = gamer.gamerID;
+
+            AccountDataController dataController = new AccountDataController();
+
+            dataController.DeleteFriend(friendToDelete);
+
+            string json = refreshFriends(incData);
+
+            return json;
+
+        }
     }
 }

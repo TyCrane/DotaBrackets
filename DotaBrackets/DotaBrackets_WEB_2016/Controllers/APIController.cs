@@ -137,21 +137,40 @@ namespace DotaBrackets_WEB_2016.Controllers
 
             if (viewModel.dotaUser.result.matches != null)
             {
-                Match thisMatch = new Match();
+
+                viewModel.gamer.dotaMatch = viewModel.dotaUser.result.matches[0];
+
+                url = "https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/V001/?match_id=" + viewModel.gamer.dotaMatch.match_id + "&key=" + apiKey;
 
                 try
                 {
-                    thisMatch = viewModel.dotaUser.result.matches[0];
-                    viewModel.gamer.dotaMatch = thisMatch;
+                    using (WebClient wc = new WebClient())
+                    {
+                        jsonResult = wc.DownloadString(url);
 
-                    return viewModel;
+                        viewModel.matchDetails = JsonConvert.DeserializeObject<RootObject4>(jsonResult);
+                    }
+
+                    if(viewModel.matchDetails.result.players.Count > 0)
+                    {
+                        MatchPlayer thisPlayer = viewModel.matchDetails.result.players.Single(player => Convert.ToInt64(player.account_id) == viewModel.gamer.dota2ID);
+                        viewModel.gamer.matchPlayer = thisPlayer;
+
+                        return viewModel;
+                    }
+                    //if the match details api call failed
+                    else
+                    {
+                        return viewModel;
+                    }
                 }
+
                 catch
                 {
                     return viewModel;
                 }
             }
-            //if the api call failed
+            //if the match history api call failed
             else
             {
                 return viewModel;
